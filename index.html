@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Karthikeyan Manimaran — Autonomous Systems Engineer</title>
+<meta name="description" content="Karthikeyan Manimaran — UAV, UGV & hybrid aerial-ground robotics engineer. SLAM, deep RL, edge autonomy."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0c10;--bg2:#0c1016;--panel:rgba(255,255,255,.016);
+  --line:rgba(120,200,210,.13);--line2:rgba(120,200,210,.22);
+  --amber:#ffb627;--amber2:#ffd06b;--amber-dim:#b9821b;
+  --teal:#2fe3c8;--teal2:#5cf0db;--teal-dim:#178d7d;
+  --red:#ff5a5a;--ink:#eaf0f2;--muted:#6f828c;--muted2:#8ba0aa;
+  --grid:rgba(110,190,200,.045);
+  --mono:'JetBrains Mono',monospace;--disp:'Chakra Petch',sans-serif;--body:'Sora',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* blueprint coordinate grid + crosshair ticks */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 30%,transparent 95%);
+  -webkit-mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 30%,transparent 95%);}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(circle at 78% 12%,rgba(255,182,39,.06),transparent 42%),
+             radial-gradient(circle at 12% 78%,rgba(47,227,200,.05),transparent 45%);}
+.noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* HUD corner-bracket framing motif */
+.hud{position:relative}
+.hud::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;
+  --c:var(--line2);--s:16px;--t:1.5px;
+  background:
+    linear-gradient(var(--c),var(--c)) 0 0/var(--s) var(--t) no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 0/var(--t) var(--s) no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 0/var(--s) var(--t) no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 0/var(--t) var(--s) no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 100%/var(--s) var(--t) no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 100%/var(--t) var(--s) no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 100%/var(--s) var(--t) no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 100%/var(--t) var(--s) no-repeat;
+  transition:--c .3s}
+.hud.teal::before{--c:var(--teal-dim)}
+.hud.amber::before{--c:var(--amber-dim)}
+.hud:hover::before{--c:var(--teal)}
+
+/* TELEMETRY TOP STRIP */
+.telem{position:fixed;top:0;left:0;right:0;z-index:300;height:26px;display:flex;align-items:center;
+  gap:0;background:#070a0d;border-bottom:1px solid var(--line);font-family:var(--mono);
+  font-size:.56rem;letter-spacing:.14em;color:var(--muted);overflow:hidden;text-transform:uppercase}
+.telem .seg{padding:0 16px;height:100%;display:flex;align-items:center;gap:7px;border-right:1px solid var(--line);white-space:nowrap}
+.telem .dot{width:5px;height:5px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);animation:blink 1.6s infinite}
+.telem .dot.amber{background:var(--amber);box-shadow:0 0 6px var(--amber)}
+.telem b{color:var(--teal2);font-weight:500}
+.telem .live{color:var(--amber2)}
+.telem .scroller{margin-left:auto;display:flex;gap:34px;animation:tick 26s linear infinite;padding-left:34px}
+.telem-wrap{margin-left:auto;flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* NAV */
+nav{position:fixed;top:26px;left:0;right:0;z-index:250;padding:14px 56px;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--line);
+  background:rgba(10,12,16,.78);backdrop-filter:blur(16px)}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.logo-mark{width:30px;height:30px;position:relative;flex-shrink:0}
+.logo-txt{font-family:var(--disp);font-weight:700;font-size:.86rem;color:var(--ink);letter-spacing:.04em}
+.logo-txt span{color:var(--amber)}
+.logo-sub{font-family:var(--mono);font-size:.5rem;color:var(--muted);letter-spacing:.22em;display:block;margin-top:1px}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{font-family:var(--mono);font-size:.62rem;color:var(--muted2);text-decoration:none;letter-spacing:.16em;
+  text-transform:uppercase;transition:color .2s;position:relative;padding:4px 0}
+.nav-links a::before{content:'';position:absolute;left:-12px;top:50%;width:4px;height:4px;
+  border:1px solid var(--teal);transform:translateY(-50%) rotate(45deg) scale(0);transition:transform .22s}
+.nav-links a:hover{color:var(--teal2)}
+.nav-links a:hover::before{transform:translateY(-50%) rotate(45deg) scale(1)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px}
+.ham span{display:block;width:22px;height:1.6px;background:var(--teal);transition:.3s}
+
+/* layout */
+.wrap{max-width:1280px;margin:0 auto;padding:0 56px}
+section{position:relative;z-index:2}
+.seclabel{font-family:var(--mono);font-size:.62rem;color:var(--amber);letter-spacing:.26em;text-transform:uppercase;
+  display:flex;align-items:center;gap:13px;margin-bottom:16px}
+.seclabel::before{content:'';width:30px;height:1px;background:var(--amber)}
+.seclabel::after{content:attr(data-id);color:var(--muted);letter-spacing:.18em}
+.sectitle{font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,3.6vw,2.9rem);line-height:1.08;letter-spacing:-.01em;margin-bottom:46px}
+.sectitle .hl{color:var(--teal)}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line2),transparent)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:140px 56px 80px;position:relative;overflow:hidden}
+.hero-inner{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center}
+.boot{opacity:0;transform:translateY(20px);animation:boot .7s cubic-bezier(.2,.7,.2,1) forwards}
+.b1{animation-delay:.05s}.b2{animation-delay:.18s}.b3{animation-delay:.32s}.b4{animation-delay:.46s}.b5{animation-delay:.6s}.b6{animation-delay:.74s}
+@keyframes boot{to{opacity:1;transform:translateY(0)}}
+.hero-tag{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.6rem;color:var(--teal2);
+  letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--teal-dim);padding:6px 13px;margin-bottom:26px}
+.hero-tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 1.4s infinite}
+.hero-name{font-family:var(--disp);font-weight:700;font-size:clamp(2.6rem,6.8vw,5.6rem);line-height:.94;letter-spacing:-.02em}
+.hero-name .l1{display:block;color:var(--ink)}
+.hero-name .l2{display:block;color:var(--amber)}
+.hero-role{margin-top:18px;font-family:var(--mono);font-size:clamp(.7rem,1.4vw,.86rem);color:var(--teal2);letter-spacing:.12em;text-transform:uppercase}
+.hero-sub{margin-top:22px;font-size:clamp(.94rem,1.7vw,1.08rem);color:var(--muted2);max-width:520px;line-height:1.8;font-weight:300}
+.hero-sub em{color:var(--ink);font-style:normal;font-weight:400}
+.hero-ctas{margin-top:34px;display:flex;gap:13px;flex-wrap:wrap}
+.btn{font-family:var(--disp);font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:13px 26px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+  position:relative;transition:transform .2s,box-shadow .25s,background .25s,color .25s;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.btn-a{background:var(--amber);color:#160d00;border:1px solid var(--amber)}
+.btn-a:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(255,182,39,.32)}
+.btn-g{background:transparent;color:var(--teal2);border:1px solid var(--teal-dim)}
+.btn-g:hover{transform:translateY(-2px);background:rgba(47,227,200,.07);border-color:var(--teal);color:var(--teal2)}
+.hero-stats{margin-top:48px;display:grid;grid-template-columns:repeat(4,auto);gap:0;border:1px solid var(--line);width:fit-content;max-width:100%}
+.stat{padding:16px 26px 14px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat .n{font-family:var(--disp);font-weight:700;font-size:1.7rem;color:var(--teal2);line-height:1}
+.stat .l{font-family:var(--mono);font-size:.54rem;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-top:6px}
+
+/* hero schematic */
+.hero-vis{position:relative;aspect-ratio:1/1;max-width:440px;margin:0 auto;width:100%}
+.hero-vis .ring{position:absolute;inset:0;border:1px solid var(--line);border-radius:50%}
+.hero-vis .ring.r2{inset:14%;border-style:dashed;border-color:rgba(47,227,200,.18);animation:spin 40s linear infinite}
+.hero-vis .ring.r3{inset:30%;border-color:rgba(255,182,39,.15)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-vis svg{position:absolute;inset:0;width:100%;height:100%}
+.vis-readout{position:absolute;font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.vis-readout b{color:var(--teal2);font-weight:500}
+.r-tl{top:4%;left:0}.r-br{bottom:4%;right:0;text-align:right}
+
+/* ABOUT */
+#about{padding:96px 0}
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:56px;align-items:start}
+.about-text p{color:var(--muted2);line-height:1.85;font-size:.98rem;margin-bottom:15px}
+.about-text p em{color:var(--ink);font-style:normal;font-weight:400}
+.about-text p strong{color:var(--amber2);font-weight:500}
+.spec{background:var(--panel);border:1px solid var(--line);padding:26px}
+.spec h3{font-family:var(--mono);font-size:.62rem;color:var(--amber);letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.spec h3::before{content:'◉';color:var(--teal)}
+.chip{display:inline-block;font-family:var(--mono);font-size:.58rem;color:var(--muted2);letter-spacing:.05em;
+  border:1px solid var(--line);padding:5px 10px;margin:3px 3px 3px 0;text-transform:uppercase;transition:.2s}
+.chip:hover,.chip.hot{border-color:var(--teal-dim);color:var(--teal2);background:rgba(47,227,200,.05)}
+.chip.am{color:var(--amber2);border-color:rgba(255,182,39,.25)}
+
+/* FEATURED SYSTEMS (home) */
+#systems{background:var(--bg2);padding:96px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sys{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center;margin-bottom:64px}
+.sys:last-of-type{margin-bottom:0}
+.sys.rev .vidcol{order:2}
+.sys-meta{font-family:var(--mono);font-size:.58rem;color:var(--teal);letter-spacing:.2em;text-transform:uppercase;margin-bottom:13px;display:flex;align-items:center;gap:10px}
+.sys-meta .bar{width:24px;height:1px;background:var(--teal)}
+.sys-meta .tag{margin-left:auto;color:var(--amber2);border:1px solid rgba(255,182,39,.25);padding:2px 9px;font-size:.52rem}
+.sys-title{font-family:var(--disp);font-weight:700;font-size:clamp(1.25rem,2.4vw,1.7rem);color:var(--ink);line-height:1.18;margin-bottom:14px}
+.sys-desc{color:var(--muted2);line-height:1.75;font-size:.93rem;margin-bottom:18px}
+.sys-desc em{color:var(--ink);font-style:normal;font-weight:400}
+.sys-pts{list-style:none;margin-bottom:22px}
+.sys-pts li{color:var(--muted2);font-size:.86rem;line-height:1.6;padding-left:22px;position:relative;margin-bottom:9px}
+.sys-pts li::before{content:'';position:absolute;left:0;top:7px;width:8px;height:8px;border:1px solid var(--teal);transform:rotate(45deg)}
+.sys-pts li b{color:var(--teal2);font-weight:500}
+.sys-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.sys-tags{display:flex;gap:6px;flex-wrap:wrap}
+.minitag{font-family:var(--mono);font-size:.54rem;color:var(--muted);border:1px solid var(--line);padding:3px 8px;letter-spacing:.06em;text-transform:uppercase}
+.brk{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;color:var(--amber2);
+  letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:gap .2s,color .2s}
+.brk:hover{gap:13px;color:var(--amber)}
+
+/* VIDEO */
+.vidcol{position:relative}
+.vidframe{position:relative;background:#000;overflow:hidden;aspect-ratio:16/10;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.vidframe video{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+.vid-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(10,12,16,.62);backdrop-filter:blur(2px);cursor:pointer;transition:opacity .25s;z-index:6}
+.vid-ov.hidden{opacity:0;pointer-events:none}
+.playring{width:64px;height:64px;border:1.5px solid var(--teal);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;margin-bottom:13px;transition:.22s;position:relative}
+.playring::before{content:'';position:absolute;inset:-7px;border:1px dashed rgba(47,227,200,.35);border-radius:50%;animation:spin 8s linear infinite}
+.vid-ov:hover .playring{transform:scale(1.08);background:rgba(47,227,200,.12);box-shadow:0 0 34px rgba(47,227,200,.3)}
+.vid-ov .lbl{font-family:var(--mono);font-size:.6rem;color:var(--teal2);letter-spacing:.18em;text-transform:uppercase}
+.vid-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--amber),var(--teal));width:0;z-index:7;pointer-events:none;transition:width .12s linear}
+.vid-corner{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:.5rem;color:var(--red);
+  letter-spacing:.14em;z-index:7;display:flex;align-items:center;gap:6px;text-transform:uppercase}
+.vid-corner .rec{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+.vidcap{margin-top:11px;font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* MAKEATHON FEATURE */
+#flagship{padding:96px 0}
+.flag{display:grid;grid-template-columns:auto 1fr;gap:42px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:42px;position:relative;overflow:hidden}
+.flag::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--amber),var(--amber2),transparent)}
+.flag-badge{text-align:center;padding:0 20px}
+.flag-rank{font-family:var(--disp);font-weight:700;font-size:5rem;line-height:1;color:var(--amber);text-shadow:0 0 38px rgba(255,182,39,.3)}
+.flag-rank sup{font-size:1.7rem}
+.flag-place{font-family:var(--mono);font-size:.6rem;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.flag-event{font-family:var(--mono);font-size:.56rem;color:var(--amber2);letter-spacing:.12em;margin-top:12px;border:1px solid rgba(255,182,39,.3);padding:5px 10px;display:inline-block}
+.flag-info h3{font-family:var(--disp);font-weight:700;font-size:1.35rem;color:var(--ink);margin-bottom:12px;line-height:1.25}
+.flag-info p{color:var(--muted2);line-height:1.75;font-size:.93rem;margin-bottom:12px}
+.flag-info p em{color:var(--amber2);font-style:normal}
+.flag-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.atag{font-family:var(--mono);font-size:.55rem;color:var(--amber2);background:rgba(255,182,39,.06);
+  border:1px solid rgba(255,182,39,.25);padding:4px 11px;letter-spacing:.08em;text-transform:uppercase}
+
+/* CERTS */
+#certs{background:var(--bg2);padding:96px 0;border-top:1px solid var(--line)}
+.cert{display:flex;align-items:center;gap:26px;background:var(--panel);border:1px solid var(--line);padding:30px 34px;max-width:860px;position:relative}
+.cert::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--teal),var(--teal-dim))}
+.cert-ic{width:54px;height:54px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal);font-family:var(--disp);font-weight:700;font-size:.9rem}
+.cert-info h3{font-family:var(--disp);font-weight:600;font-size:.98rem;color:var(--ink);margin-bottom:7px}
+.cert-info p{color:var(--muted2);font-size:.85rem;line-height:1.6}
+.cert-badges{margin-top:11px;display:flex;gap:7px;flex-wrap:wrap}
+.cb{font-family:var(--mono);font-size:.54rem;color:var(--teal2);background:rgba(47,227,200,.06);border:1px solid var(--teal-dim);padding:3px 9px;letter-spacing:.06em}
+.cert-score{margin-left:auto;text-align:center;flex-shrink:0}
+.cert-score .v{font-family:var(--disp);font-weight:700;font-size:1.9rem;color:var(--teal2)}
+.cert-score .l{font-family:var(--mono);font-size:.52rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+
+/* CONTACT */
+#contact{padding:110px 0}
+.contact-c{text-align:center;max-width:680px;margin:0 auto}
+.contact-big{font-family:var(--disp);font-weight:700;font-size:clamp(2rem,5.2vw,4.4rem);line-height:1.04;color:var(--ink);margin:18px 0 22px}
+.contact-big span{color:var(--amber)}
+.contact-sub{color:var(--muted2);max-width:480px;margin:0 auto;line-height:1.8;font-size:.96rem}
+.contact-sub em{color:var(--ink);font-style:normal}
+.contact-grid{display:flex;justify-content:center;gap:13px;flex-wrap:wrap;margin-top:40px}
+.clink{display:flex;align-items:center;gap:10px;padding:13px 22px;border:1px solid var(--line);font-family:var(--mono);
+  font-size:.62rem;color:var(--muted2);text-decoration:none;letter-spacing:.08em;transition:.22s;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.clink:hover{border-color:var(--teal);color:var(--teal2);transform:translateY(-3px)}
+.clink svg{flex-shrink:0}
+
+footer{padding:26px 56px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+footer p{font-family:var(--mono);font-size:.56rem;color:var(--muted);letter-spacing:.1em}
+footer .id{color:var(--amber2)}
+
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .65s,transform .65s}
+.reveal.show{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+@media(max-width:980px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-vis{display:none}
+  .about-grid{grid-template-columns:1fr;gap:34px}
+  .sys{grid-template-columns:1fr;gap:24px}
+  .sys.rev .vidcol{order:0}
+  .flag{grid-template-columns:1fr;gap:28px;text-align:center}
+  .flag-tags{justify-content:center}
+}
+@media(max-width:720px){
+  nav{padding:13px 22px}
+  .wrap{padding:0 22px}
+  #hero{padding:120px 22px 60px}
+  .nav-links{display:none;position:fixed;top:84px;left:0;right:0;flex-direction:column;gap:22px;
+    background:rgba(8,10,14,.98);padding:28px 24px;border-bottom:1px solid var(--line)}
+  .nav-links.open{display:flex}
+  .nav-links a::before{display:none}
+  .ham{display:flex}
+  .telem .seg.hide-m{display:none}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .cert{flex-direction:column;text-align:center}
+  .cert-score{margin-left:0}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<!-- TELEMETRY STRIP -->
+<div class="telem">
+  <div class="seg"><span class="dot"></span><b>SYS</b> NOMINAL</div>
+  <div class="seg hide-m"><span class="dot amber"></span>AUTONOMY <span class="live">ENGAGED</span></div>
+  <div class="telem-wrap">
+    <div class="scroller">
+      <span>LOC: CHENNAI · IN</span><span>UAV · UGV · HYBRID</span><span>SLAM // ACTIVE</span><span>DEEP-RL // TRAINING</span><span>EDGE: JETSON ONLINE</span><span>L&amp;T MAKEATHON // 1ST</span>
+      <span>LOC: CHENNAI · IN</span><span>UAV · UGV · HYBRID</span><span>SLAM // ACTIVE</span><span>DEEP-RL // TRAINING</span><span>EDGE: JETSON ONLINE</span><span>L&amp;T MAKEATHON // 1ST</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">
+    <span class="logo-mark">
+      <svg viewBox="0 0 30 30" fill="none">
+        <rect x="9" y="9" width="12" height="12" stroke="var(--amber)" stroke-width="1.5"/>
+        <circle cx="15" cy="15" r="3" fill="var(--teal)"/>
+        <path d="M3 3h5M3 3v5M27 3h-5M27 3v5M3 27h5M3 27v-5M27 27h-5M27 27v-5" stroke="var(--teal)" stroke-width="1.5"/>
+      </svg>
+    </span>
+    <span class="logo-txt">KARTHIKEYAN<span>.</span>M
+      <span class="logo-sub">AUTONOMOUS SYSTEMS</span>
+    </span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeNav()">About</a></li>
+    <li><a href="#systems" onclick="closeNav()">Systems</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#flagship" onclick="closeNav()">Award</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+  </ul>
+  <div class="ham" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="hero-tag boot b1"><span class="pulse"></span>UAV · UGV · HYBRID AERIAL-GROUND</span>
+      <h1 class="hero-name">
+        <span class="l1 boot b2">Karthikeyan</span>
+        <span class="l2 boot b3">Manimaran</span>
+      </h1>
+      <div class="hero-role boot b3">Autonomous Systems &amp; Robotics Engineer</div>
+      <p class="hero-sub boot b4">Final-year B.Tech CS (AI &amp; Robotics) at <em>VIT Chennai</em>. I build <em>autonomous UAV, UGV &amp; hybrid platforms</em> — real-time SLAM, deep reinforcement learning, and edge autonomy that runs in the physical world, not just simulation.</p>
+      <div class="hero-ctas boot b5">
+        <a href="projects.html" class="btn btn-a">View Projects →</a>
+        <a href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener" class="btn btn-g">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener" class="btn btn-g">LinkedIn ↗</a>
+      </div>
+      <div class="hero-stats boot b6">
+        <div class="stat"><div class="n">8</div><div class="l">Systems Built</div></div>
+        <div class="stat"><div class="n">8.11</div><div class="l">CGPA</div></div>
+        <div class="stat"><div class="n">1<sup style="font-size:.9rem">st</sup></div><div class="l">L&amp;T Makeathon</div></div>
+        <div class="stat"><div class="n">90%</div><div class="l">Oracle AI Exam</div></div>
+      </div>
+    </div>
+
+    <!-- hero schematic: quadrotor over ground rover -->
+    <div class="hero-vis boot b4">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <span class="vis-readout r-tl">TARGET LOCK<br/><b>UGV // DOCK</b></span>
+      <span class="vis-readout r-br">ALT <b>1.40m</b><br/>VEL <b>0.05 m/s</b></span>
+      <svg viewBox="0 0 400 400" fill="none">
+        <defs>
+          <filter id="g"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- crosshair -->
+        <line x1="200" y1="40" x2="200" y2="360" stroke="rgba(47,227,200,.12)" stroke-width="1" stroke-dasharray="3 5"/>
+        <line x1="40" y1="200" x2="360" y2="200" stroke="rgba(47,227,200,.12)" stroke-width="1" stroke-dasharray="3 5"/>
+        <!-- quadrotor (top) -->
+        <g transform="translate(200,150)">
+          <rect x="-26" y="-16" width="52" height="32" rx="5" fill="rgba(47,227,200,.08)" stroke="var(--teal)" stroke-width="1.5" filter="url(#g)"/>
+          <rect x="-16" y="-8" width="32" height="16" rx="3" fill="none" stroke="rgba(47,227,200,.4)" stroke-width="1"/>
+          <line x1="-22" y1="-12" x2="-62" y2="-40" stroke="var(--teal)" stroke-width="2"/>
+          <line x1="22" y1="-12" x2="62" y2="-40" stroke="var(--teal)" stroke-width="2"/>
+          <line x1="-22" y1="12" x2="-62" y2="40" stroke="var(--teal)" stroke-width="2"/>
+          <line x1="22" y1="12" x2="62" y2="40" stroke="var(--teal)" stroke-width="2"/>
+          <g>
+            <circle cx="-62" cy="-40" r="13" fill="rgba(47,227,200,.06)" stroke="var(--teal)" stroke-width="1.5"/>
+            <ellipse cx="-62" cy="-40" rx="30" ry="3" fill="none" stroke="rgba(47,227,200,.45)" stroke-width="1.5"><animateTransform attributeName="transform" type="rotate" from="0 -62 -40" to="360 -62 -40" dur=".4s" repeatCount="indefinite"/></ellipse>
+          </g>
+          <g>
+            <circle cx="62" cy="-40" r="13" fill="rgba(47,227,200,.06)" stroke="var(--teal)" stroke-width="1.5"/>
+            <ellipse cx="62" cy="-40" rx="30" ry="3" fill="none" stroke="rgba(47,227,200,.45)" stroke-width="1.5"><animateTransform attributeName="transform" type="rotate" from="360 62 -40" to="0 62 -40" dur=".4s" repeatCount="indefinite"/></ellipse>
+          </g>
+          <g>
+            <circle cx="-62" cy="40" r="13" fill="rgba(255,182,39,.06)" stroke="var(--amber)" stroke-width="1.5"/>
+            <ellipse cx="-62" cy="40" rx="30" ry="3" fill="none" stroke="rgba(255,182,39,.45)" stroke-width="1.5"><animateTransform attributeName="transform" type="rotate" from="360 -62 40" to="0 -62 40" dur=".4s" repeatCount="indefinite"/></ellipse>
+          </g>
+          <g>
+            <circle cx="62" cy="40" r="13" fill="rgba(255,182,39,.06)" stroke="var(--amber)" stroke-width="1.5"/>
+            <ellipse cx="62" cy="40" rx="30" ry="3" fill="none" stroke="rgba(255,182,39,.45)" stroke-width="1.5"><animateTransform attributeName="transform" type="rotate" from="0 62 40" to="360 62 40" dur=".4s" repeatCount="indefinite"/></ellipse>
+          </g>
+        </g>
+        <!-- docking beam -->
+        <line x1="200" y1="170" x2="200" y2="262" stroke="rgba(255,182,39,.4)" stroke-width="1.5" stroke-dasharray="4 4">
+          <animate attributeName="stroke-dashoffset" values="0;-16" dur="1s" repeatCount="indefinite"/>
+        </line>
+        <!-- ground rover (bottom) -->
+        <g transform="translate(200,290)">
+          <rect x="-44" y="-14" width="88" height="28" rx="3" fill="rgba(255,182,39,.08)" stroke="var(--amber)" stroke-width="1.5"/>
+          <rect x="-30" y="-22" width="60" height="10" rx="2" fill="rgba(255,182,39,.05)" stroke="rgba(255,182,39,.4)" stroke-width="1"/>
+          <circle cx="-30" cy="16" r="13" fill="rgba(10,12,16,.9)" stroke="var(--amber)" stroke-width="2"/>
+          <circle cx="30" cy="16" r="13" fill="rgba(10,12,16,.9)" stroke="var(--amber)" stroke-width="2"/>
+          <circle cx="-30" cy="16" r="5" fill="none" stroke="rgba(255,182,39,.5)" stroke-width="1"/>
+          <circle cx="30" cy="16" r="5" fill="none" stroke="rgba(255,182,39,.5)" stroke-width="1"/>
+          <!-- fiducial marker -->
+          <rect x="-7" y="-22" width="14" height="10" fill="none" stroke="var(--teal)" stroke-width="1"/>
+          <rect x="-4" y="-19" width="3" height="3" fill="var(--teal)"/><rect x="2" y="-16" width="3" height="3" fill="var(--teal)"/>
+        </g>
+        <!-- target reticle on rover -->
+        <circle cx="200" cy="290" r="58" fill="none" stroke="rgba(47,227,200,.25)" stroke-width="1" stroke-dasharray="6 8"><animateTransform attributeName="transform" type="rotate" from="0 200 290" to="360 200 290" dur="14s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="seclabel reveal" data-id="// SYS.01">Operator Profile</div>
+    <h2 class="sectitle reveal">Building machines that<br/><span class="hl">fly, drive &amp; decide</span> themselves</h2>
+    <div class="about-grid">
+      <div class="about-text reveal d1">
+        <p>I'm a <em>final-year</em> B.Tech student specializing in <em>AI &amp; Robotics</em> at VIT Chennai (Reg: 23BRS1428), focused on the intersection of autonomous systems, deep learning, and physical hardware.</p>
+        <p>My core interest spans <strong>UAVs</strong>, <strong>UGVs</strong>, and <strong>hybrid aerial-ground systems</strong> — platforms that switch domains, coordinate between air and ground, or operate as heterogeneous robot teams. I'm drawn to the hardest part of robotics: making systems work reliably in unstructured, GPS-denied, real-world environments.</p>
+        <p>My work covers <em>GPS-denied SLAM</em>, deep-RL precision landing, and real-time edge computing on Jetson. I think in full systems — sensor stacks, control loops, and deployment constraints all at once.</p>
+        <p>Recognized by <strong>Larsen &amp; Toubro</strong> with a full internship offer after placing <em>1st</em> at their sponsored Makeathon. Oracle-certified in Generative AI with a 90% exam score.</p>
+      </div>
+      <div class="spec hud teal reveal d2">
+        <h3>Core Stack</h3>
+        <div>
+          <span class="chip hot">ROS 2</span><span class="chip hot">ROS Noetic</span><span class="chip hot">PX4</span><span class="chip hot">MAVROS</span>
+          <span class="chip hot">RTAB-Map</span><span class="chip am">SAC</span><span class="chip am">DDPG</span>
+          <span class="chip">Gazebo</span><span class="chip">RViz</span><span class="chip">Docker</span>
+          <span class="chip">PyTorch</span><span class="chip">YOLO</span><span class="chip">SuperGlue</span>
+          <span class="chip">Jetson</span><span class="chip">RealSense D435i</span><span class="chip">ArUco / Fiducials</span>
+          <span class="chip">Python</span><span class="chip">C++</span><span class="chip">ArduPilot</span>
+          <span class="chip hot">Hybrid UAV-UGV</span><span class="chip hot">State Machines</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED SYSTEMS -->
+<section id="systems">
+  <div class="wrap">
+    <div class="seclabel reveal" data-id="// SYS.02">Featured Systems · Live Hardware</div>
+    <h2 class="sectitle reveal">Real flight. Real data.<br/><span class="hl">Captured on running hardware.</span></h2>
+
+    <!-- SLAM -->
+    <div class="sys reveal">
+      <div class="vidcol hud teal">
+        <div class="vidframe" id="vc1">
+          <div class="vid-corner"><span class="rec"></span>REC · SLAM</div>
+          <video id="v1" preload="metadata" playsinline loop muted><source src="demo1.webm" type="video/webm"/></video>
+          <div class="vid-bar" id="vb1"></div>
+          <div class="vid-ov" id="vo1">
+            <div class="playring"><svg style="margin-left:4px" width="22" height="22" viewBox="0 0 24 24" fill="var(--teal)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="lbl">▶ Play SLAM Demo</span>
+          </div>
+        </div>
+        <div class="vidcap">// SLAM 3D mapping live on NVIDIA Jetson Nano</div>
+      </div>
+      <div class="sys-info">
+        <div class="sys-meta"><span class="bar"></span>System 01<span class="tag">GPS-DENIED</span></div>
+        <h3 class="sys-title">RealSense-RTAB SLAM — 3D Mapping for GPS-Denied UAVs</h3>
+        <p class="sys-desc">Real-time <em>Visual-Inertial SLAM</em> using Intel RealSense D435i + IMU fused through RTAB-Map, building dense 3D point-cloud maps onboard — no GPS.</p>
+        <ul class="sys-pts">
+          <li>Full ROS 2 + PX4 + MAVROS stack on <b>NVIDIA Jetson Nano</b></li>
+          <li>Stable loop-closure detection at <b>~6 FPS</b> on edge hardware</li>
+          <li><b>&lt;5 cm</b> drift over 20 m indoor traversal</li>
+        </ul>
+        <div class="sys-foot">
+          <div class="sys-tags"><span class="minitag">ROS 2</span><span class="minitag">RTAB-Map</span><span class="minitag">RealSense</span><span class="minitag">Jetson</span></div>
+          <a href="projects.html#p1" class="brk">Full breakdown →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHYSICAL UAV -->
+    <div class="sys rev reveal">
+      <div class="vidcol hud amber">
+        <div class="vidframe" id="vc2">
+          <div class="vid-corner"><span class="rec"></span>REC · FLIGHT</div>
+          <video id="v2" preload="metadata" playsinline loop muted><source src="demo2.mp4" type="video/mp4"/></video>
+          <div class="vid-bar" id="vb2"></div>
+          <div class="vid-ov" id="vo2">
+            <div class="playring"><svg style="margin-left:4px" width="22" height="22" viewBox="0 0 24 24" fill="var(--teal)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="lbl">▶ Play Flight Demo</span>
+          </div>
+        </div>
+        <div class="vidcap">// Holybro X650 + RHINO UGV · VIT Chennai indoor arena</div>
+      </div>
+      <div class="sys-info">
+        <div class="sys-meta"><span class="bar"></span>System 02<span class="tag">REAL HARDWARE</span></div>
+        <h3 class="sys-title">Autonomous UAV — Physical Hardware Flight Demo</h3>
+        <p class="sys-desc">Live indoor flight of a <em>Holybro X650 quadrotor</em> with the RHINO UGV as an autonomous docking target — real hardware, not simulation, integrating RL policies trained in Gazebo.</p>
+        <ul class="sys-pts">
+          <li>Drone autonomously hovers &amp; approaches the <b>RHINO ground target</b></li>
+          <li><b>PX4 + MAVROS + ROS 2</b> — identical interface to the sim stack</li>
+          <li>Jetson companion compute · netted safety arena</li>
+        </ul>
+        <div class="sys-foot">
+          <div class="sys-tags"><span class="minitag">PX4</span><span class="minitag">MAVROS</span><span class="minitag">Holybro X650</span><span class="minitag">RHINO UGV</span></div>
+          <a href="projects.html#p2" class="brk">Full breakdown →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINE MAPPING -->
+    <div class="sys reveal">
+      <div class="vidcol hud teal">
+        <div class="vidframe" id="vc3">
+          <div class="vid-corner"><span class="rec"></span>REC · MINE</div>
+          <img src="mine_demo.gif" alt="Mine mapping robot demo animation" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div class="vid-bar" id="vb3"></div>
+          <div class="vid-ov" id="vo3">
+            <div class="playring"><svg style="margin-left:4px" width="22" height="22" viewBox="0 0 24 24" fill="var(--teal)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="lbl">▶ Explore Mine Mapping</span>
+          </div>
+        </div>
+        <div class="vidcap">// Autonomous / manual mine mapping robot</div>
+      </div>
+      <div class="sys-info">
+        <div class="sys-meta"><span class="bar"></span>System 03<span class="tag">UNDERGROUND</span></div>
+        <h3 class="sys-title">Autonomous / Manual Mine Mapping Robot — Underground Navigation &amp; Mapping</h3>
+        <p class="sys-desc">A field-oriented mapping platform for <em>mine environments</em> that supports both manual teleoperation and autonomous exploration, combining navigation, SLAM, and embedded robustness for constrained subterranean operation.</p>
+        <ul class="sys-pts">
+          <li>Built for <b>underground mapping</b> with onboard localization and map generation</li>
+          <li>Supports <b>manual control + autonomous navigation</b> for practical deployment workflows</li>
+          <li>Designed around <b>real-world robustness</b> rather than simulation-only behavior</li>
+        </ul>
+        <div class="sys-foot">
+          <div class="sys-tags"><span class="minitag">ROS</span><span class="minitag">SLAM</span><span class="minitag">Navigation</span><span class="minitag">Embedded</span></div>
+          <a href="projects.html#mine-project" class="brk">Full breakdown →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAKEATHON FLAGSHIP -->
+<section id="flagship">
+  <div class="wrap">
+    <div class="seclabel reveal" data-id="// SYS.03">Award · Flagship Build</div>
+    <h2 class="sectitle reveal">Makeathon Winner — <span class="hl">Code Optimizer AI</span></h2>
+    <div class="flag hud amber reveal d1">
+      <div class="flag-badge">
+        <div class="flag-rank">1<sup>st</sup></div>
+        <div class="flag-place">Place · 40+ Teams</div>
+        <div class="flag-event">L&amp;T × INNOVA MAKEATHON</div>
+      </div>
+      <div class="flag-info">
+        <h3>An AI-powered code optimization platform that won me an L&amp;T internship offer</h3>
+        <p>Built for the <em>Larsen &amp; Toubro–sponsored Makeathon</em>, Code Optimizer AI analyzes, refactors and optimizes code across multiple languages — using AST parsing and ML to surface inefficiencies, bugs and best-practice fixes with side-by-side performance comparison.</p>
+        <p>The build outperformed <em>40+ teams</em> across VIT Chennai and led directly to a <em>full internship offer from L&amp;T</em>.</p>
+        <div class="flag-tags">
+          <span class="atag">React + Vite</span><span class="atag">AST Analysis</span><span class="atag">Multi-Language</span><span class="atag">L&amp;T Offer</span>
+        </div>
+        <div class="sys-foot" style="margin-top:18px">
+          <a href="https://github.com/karthikeyan-manimaran/code-optimizer-AI" target="_blank" rel="noopener" class="brk">View on GitHub ↗</a>
+          <a href="projects.html#p6" class="brk">Full breakdown →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="wrap">
+    <div class="seclabel reveal" data-id="// SYS.04">Credentials</div>
+    <h2 class="sectitle reveal">Certification</h2>
+    <div class="cert hud reveal d1">
+      <div class="cert-ic">AI</div>
+      <div class="cert-info">
+        <h3>Oracle Cloud Infrastructure — Generative AI Professional</h3>
+        <p>Certified on LLM fundamentals, OCI Generative AI services, embeddings, vector databases, prompt engineering, RAG chatbot design and OCI Document Understanding.</p>
+        <div class="cert-badges">
+          <span class="cb">Valid → Jul 2027</span><span class="cb">ID 321158504OCI25GAIOCP</span><span class="cb">Exam 1Z0-1127-25</span>
+        </div>
+      </div>
+      <div class="cert-score"><div class="v">90%</div><div class="l">Score</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-c">
+      <div class="seclabel reveal" data-id="// SYS.05" style="justify-content:center">Establish Link</div>
+      <h2 class="contact-big reveal">Let's build something<br/><span>that moves.</span></h2>
+      <p class="contact-sub reveal d1">Open to <em>UAV · UGV · Hybrid Aerial-Ground</em> internships, research collaborations, and hard problems in autonomous systems.</p>
+      <div class="contact-grid reveal d2">
+        <a href="mailto:karthikeyanm19112005@gmail.com" class="clink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          karthikeyanm19112005@gmail.com
+        </a>
+        <a href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener" class="clink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener" class="clink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 KARTHIKEYAN MANIMARAN · CHENNAI, IN · UAV · UGV · HYBRID AERIAL-GROUND SYSTEMS</p>
+  <p class="id">23BRS1428 · VIT CHENNAI</p>
+</footer>
+
+<script>
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
+function closeNav(){document.getElementById('navLinks').classList.remove('open')}
+
+const vids=[{v:'v1',o:'vo1',b:'vb1'},{v:'v2',o:'vo2',b:'vb2'}];
+vids.forEach(({v,o,b})=>{
+  const vid=document.getElementById(v),ov=document.getElementById(o),bar=document.getElementById(b);
+  if(!vid)return;
+  function pauseOthers(){vids.forEach(({v:id,o:oid})=>{if(id!==v){const el=document.getElementById(id);if(el&&!el.paused){el.pause();document.getElementById(oid).classList.remove('hidden');}}})}
+  ov.addEventListener('click',()=>{pauseOthers();vid.play().then(()=>ov.classList.add('hidden')).catch(e=>console.warn(e));});
+  vid.addEventListener('click',()=>{if(vid.paused){pauseOthers();vid.play().then(()=>ov.classList.add('hidden')).catch(e=>console.warn(e));}else{vid.pause();ov.classList.remove('hidden');}});
+  vid.addEventListener('timeupdate',()=>{if(vid.duration)bar.style.width=(vid.currentTime/vid.duration*100)+'%';});
+  vid.addEventListener('ended',()=>{ov.classList.remove('hidden');bar.style.width='0';});
+});
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
