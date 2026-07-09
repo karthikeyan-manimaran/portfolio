@@ -194,6 +194,16 @@ section{position:relative;z-index:2}
 .vid-corner .rec{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
 .vidcap{margin-top:11px;font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 
+.research-card{background:linear-gradient(135deg,rgba(255,182,39,.06),rgba(47,227,200,.05));border:1px solid var(--line);padding:34px 36px;position:relative;overflow:hidden;margin-top:20px}
+.research-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--teal),transparent)}
+.research-meta{font-family:var(--mono);font-size:.58rem;color:var(--amber2);letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px}
+.research-card h3{font-family:var(--disp);font-weight:700;font-size:1.2rem;color:var(--ink);margin-bottom:12px;line-height:1.3}
+.research-card p{color:var(--muted2);line-height:1.8;margin-bottom:14px}
+.research-list{list-style:none;display:grid;gap:10px}
+.research-list li{color:var(--muted2);font-size:.9rem;line-height:1.65;padding-left:20px;position:relative}
+.research-list li::before{content:'';position:absolute;left:0;top:8px;width:8px;height:8px;border:1px solid var(--teal);transform:rotate(45deg)}
+.research-foot{margin-top:18px}
+
 /* MAKEATHON FEATURE */
 #flagship{padding:96px 0}
 .flag{display:grid;grid-template-columns:auto 1fr;gap:42px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:42px;position:relative;overflow:hidden}
@@ -496,7 +506,7 @@ footer .id{color:var(--amber2)}
       <div class="vidcol hud teal">
         <div class="vidframe" id="vc3">
           <div class="vid-corner"><span class="rec"></span>REC · MINE</div>
-          <img src="mine_demo.gif" alt="Mine mapping robot demo animation" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <video id="v3" preload="metadata" playsinline loop muted><source src="mine_demo.mp4" type="video/mp4"/></video>
           <div class="vid-bar" id="vb3"></div>
           <div class="vid-ov" id="vo3">
             <div class="playring"><svg style="margin-left:4px" width="22" height="22" viewBox="0 0 24 24" fill="var(--teal)"><polygon points="5,3 19,12 5,21"/></svg></div>
@@ -518,6 +528,26 @@ footer .id{color:var(--amber2)}
           <div class="sys-tags"><span class="minitag">ROS</span><span class="minitag">SLAM</span><span class="minitag">Navigation</span><span class="minitag">Embedded</span></div>
           <a href="projects.html#mine-project" class="brk">Full breakdown →</a>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <div class="wrap">
+    <div class="seclabel reveal" data-id="// SYS.03">Research Spotlight</div>
+    <h2 class="sectitle reveal">Paper highlight — <span class="hl">grapheme-aware Tamil abuse detection</span></h2>
+    <div class="research-card reveal d1">
+      <div class="research-meta">ACL Anthology · DravidianLangTech 2026</div>
+      <h3>HNK@DravidianLangTech 2026: Investigating Grapheme-Level Normalization for Abusive Tamil Text Classification</h3>
+      <p>This work studies abusive Tamil text classification on social media by comparing IndicBERT, MuRIL, and Tamil-BERT, then adding <em>grapheme-aware normalization</em> to preserve Tamil Unicode structure during preprocessing.</p>
+      <ul class="research-list">
+        <li><strong>Focus:</strong> binary classification of abusive Tamil content targeting women.</li>
+        <li><strong>Key idea:</strong> grapheme-level normalization improves robustness to script-level variation.</li>
+        <li><strong>Outcome:</strong> the Tamil-BERT + normalization setup performed best and the team placed third in the shared task.</li>
+      </ul>
+      <div class="research-foot">
+        <a href="https://aclanthology.org/2026.dravidianlangtech-1.38.pdf" target="_blank" rel="noopener" class="brk">Read the paper ↗</a>
       </div>
     </div>
   </div>
@@ -596,18 +626,17 @@ footer .id{color:var(--amber2)}
 
 <footer>
   <p>© 2026 KARTHIKEYAN MANIMARAN · CHENNAI, IN · UAV · UGV · HYBRID AERIAL-GROUND SYSTEMS</p>
-  <p class="id">23BRS1428 · VIT CHENNAI</p>
 </footer>
 
 <script>
 function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
 function closeNav(){document.getElementById('navLinks').classList.remove('open')}
 
-const vids=[{v:'v1',o:'vo1',b:'vb1'},{v:'v2',o:'vo2',b:'vb2'}];
+const vids=[{v:'v1',o:'vo1',b:'vb1'},{v:'v2',o:'vo2',b:'vb2'},{v:'v3',o:'vo3',b:'vb3'}];
 vids.forEach(({v,o,b})=>{
   const vid=document.getElementById(v),ov=document.getElementById(o),bar=document.getElementById(b);
-  if(!vid)return;
-  function pauseOthers(){vids.forEach(({v:id,o:oid})=>{if(id!==v){const el=document.getElementById(id);if(el&&!el.paused){el.pause();document.getElementById(oid).classList.remove('hidden');}}})}
+  if(!vid||!ov)return;
+  function pauseOthers(){vids.forEach(({v:id,o:oid})=>{if(id!==v){const el=document.getElementById(id);if(el&&!el.paused){el.pause();const otherOverlay=document.getElementById(oid);if(otherOverlay)otherOverlay.classList.remove('hidden');}}})}
   ov.addEventListener('click',()=>{pauseOthers();vid.play().then(()=>ov.classList.add('hidden')).catch(e=>console.warn(e));});
   vid.addEventListener('click',()=>{if(vid.paused){pauseOthers();vid.play().then(()=>ov.classList.add('hidden')).catch(e=>console.warn(e));}else{vid.pause();ov.classList.remove('hidden');}});
   vid.addEventListener('timeupdate',()=>{if(vid.duration)bar.style.width=(vid.currentTime/vid.duration*100)+'%';});
