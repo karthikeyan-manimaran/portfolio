@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="preload" as="image" href="assets/img/capstone/drone-cutout.webp" type="image/webp"/>
-<link rel="stylesheet" href="assets/css/tw.css?v=c7db3872"/>
+<link rel="stylesheet" href="assets/css/tw.css?v=2b30744a"/>
 </head>
 <body>
 
@@ -255,11 +255,91 @@
         <ul class="bul mt-3"><li><b>Latency fixed</b>: MAVLink stream cap, moving average, console logging</li><li><b>Yaw drift isolated</b> to two loops correcting the same axes</li><li>Takeoff crash traced to spin-up vibration → deadbands</li></ul>
       </div>
     </div>
-    <div class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-      <button class="shot light reveal" data-zoom="assets/img/capstone/arch.jpg" data-cap="System architecture"><img src="assets/img/capstone/arch.jpg" alt="System architecture" loading="lazy"/><span class="cap">System architecture</span></button>
-      <button class="shot light reveal d1" data-zoom="assets/img/capstone/hybrid.jpg" data-cap="Final hybrid controller"><img src="assets/img/capstone/hybrid.jpg" alt="Hybrid controller" loading="lazy"/><span class="cap">Hybrid controller</span></button>
-      <button class="shot light reveal d2" data-zoom="assets/img/capstone/filter.jpg" data-cap="EMA vs 10-sample moving average"><img src="assets/img/capstone/filter.jpg" alt="Filter step response" loading="lazy"/><span class="cap">Latency fix</span></button>
-      <button class="shot light reveal d3" data-zoom="assets/img/capstone/flightlog.jpg" data-cap="Flight log of one test run"><img src="assets/img/capstone/flightlog.jpg" alt="Flight log" loading="lazy"/><span class="cap">Flight log</span></button>
+    <div class="mt-4 grid gap-4 md:grid-cols-2" id="capstone-figs">
+      <figure class="card reveal  flex flex-col p-5 md:p-6">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. A — System architecture</span><span class="text-ice">Fig 3.1</span></div>
+        <div class="-mx-1 mt-4 overflow-x-auto px-1"><svg viewBox="0 0 600 316" class="dg w-full min-w-[540px]" role="img" aria-label="System architecture: PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it."><defs>
+<marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
+<marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
+</defs>
+<rect x="174" y="98" width="292" height="148" rx="14" class="reg"/>
+<text x="186" y="116" class="s hi">TILT-COMPENSATION LOOP</text><text x="186" y="234" class="s">outer loop around PX4</text>
+<rect x="20" y="16" width="140" height="40" rx="10" class="n "/><text x="90.0" y="40.0" class="t" text-anchor="middle">RC receiver</text>
+<rect x="20" y="130" width="140" height="84" rx="10" class="n "/><text x="90.0" y="162.0" class="t" text-anchor="middle">Pixhawk 6C Mini</text><text x="90.0" y="177.0" class="s" text-anchor="middle">PX4 · IMU</text><text x="90.0" y="189.0" class="s" text-anchor="middle">estimator</text>
+<rect x="190" y="130" width="140" height="84" rx="10" class="nh "/><text x="260.0" y="162.0" class="t" text-anchor="middle">Raspberry Pi 5</text><text x="260.0" y="177.0" class="s" text-anchor="middle">Ubuntu 24.04</text><text x="260.0" y="189.0" class="s" text-anchor="middle">ROS 2 + MAVROS</text>
+<rect x="360" y="130" width="92" height="84" rx="10" class="nh "/><text x="406.0" y="168.0" class="t" text-anchor="middle">PCA9685</text><text x="406.0" y="183.0" class="s" text-anchor="middle">16-ch PWM</text>
+<rect x="490" y="48" width="100" height="56" rx="10" class="n "/><text x="540.0" y="72.0" class="t" text-anchor="middle">Roll servos</text><text x="540.0" y="87.0" class="s" text-anchor="middle">4 × MG995</text>
+<rect x="490" y="236" width="100" height="56" rx="10" class="n "/><text x="540.0" y="260.0" class="t" text-anchor="middle">Pitch servos</text><text x="540.0" y="275.0" class="s" text-anchor="middle">4 × MG995</text>
+<rect x="360" y="268" width="92" height="36" rx="10" class="n "/><text x="406.0" y="282.0" class="t" text-anchor="middle">Servo PSU</text><text x="406.0" y="297.0" class="s" text-anchor="middle">5–6 V</text>
+<path d="M90 58V128" class="l flow" marker-end="url(#ah)" /><text x="100" y="98" class="s">RC link</text>
+<path d="M162 172H188" class="l la" marker-end="url(#ah)" marker-start="url(#ah)"/><text x="175" y="162" class="s" text-anchor="middle">UART</text>
+<path d="M332 172H358" class="l la flow" marker-end="url(#ah)" /><text x="345" y="162" class="s" text-anchor="middle">I²C</text>
+<path d="M454 160C474 160 474 76 488 76" class="l la flow" marker-end="url(#ah)" />
+<path d="M454 184C474 184 474 264 488 264" class="l la flow" marker-end="url(#ah)" /><text x="478" y="176" class="s hi" text-anchor="middle">PWM</text>
+<path d="M406 268V216" class="l" marker-end="url(#ah)" /></svg></div>
+        <p class="mt-2 font-mono text-[9px] uppercase tracking-[.18em] text-dim md:hidden">← swipe to see all →</p>
+        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it.</figcaption>
+      </figure>
+      <figure class="card reveal d1 flex flex-col p-5 md:p-6">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. B — Hybrid controller</span><span class="text-ice">Fig 4.2</span></div>
+        <div class="-mx-1 mt-4 overflow-x-auto px-1"><svg viewBox="0 0 600 370" class="dg w-full min-w-[540px]" role="img" aria-label="Hybrid controller: Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old."><defs>
+<marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
+<marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
+</defs>
+<rect x="20" y="14" width="170" height="52" rx="10" class="n "/><text x="105.0" y="36.0" class="t" text-anchor="middle">IMU message</text><text x="105.0" y="51.0" class="s" text-anchor="middle">attitude · rates</text>
+<rect x="215" y="14" width="180" height="52" rx="10" class="n "/><text x="305.0" y="30.0" class="t" text-anchor="middle">Flight phase</text><text x="305.0" y="45.0" class="s" text-anchor="middle">GROUND · TAKEOFF</text><text x="305.0" y="57.0" class="s" text-anchor="middle">FLIGHT · LANDING</text>
+<rect x="430" y="14" width="130" height="52" rx="10" class="n "/><text x="495.0" y="36.0" class="t" text-anchor="middle">rel_alt</text><text x="495.0" y="51.0" class="s" text-anchor="middle">lockout?</text>
+<rect x="20" y="150" width="170" height="66" rx="10" class="nh "/><text x="105.0" y="173.0" class="t" text-anchor="middle">Source A</text><text x="105.0" y="188.0" class="s" text-anchor="middle">IMU · P-only</text><text x="105.0" y="200.0" class="s" text-anchor="middle">+ rate damping</text>
+<rect x="215" y="150" width="170" height="66" rx="10" class="nh "/><text x="300.0" y="173.0" class="t" text-anchor="middle">Source B</text><text x="300.0" y="188.0" class="s" text-anchor="middle">PX4 control × scale</text><text x="300.0" y="200.0" class="s" text-anchor="middle">+ rate damping</text>
+<rect x="410" y="150" width="170" height="66" rx="10" class="n "/><text x="495.0" y="173.0" class="t" text-anchor="middle">Lockout</text><text x="495.0" y="188.0" class="s" text-anchor="middle">IMU tilt off</text><text x="495.0" y="200.0" class="s" text-anchor="middle">pitch hold only</text>
+<path d="M105 68V148" class="l la" marker-end="url(#ah)" />
+<path d="M252 68V130H150V148" class="l" marker-end="url(#ah)" /><text x="196" y="86" class="s bg" text-anchor="middle">GROUND · TAKEOFF</text><text x="196" y="98" class="s bg" text-anchor="middle">LANDING, or</text><text x="196" y="110" class="s bg" text-anchor="middle">stream stale</text>
+<path d="M300 68V148" class="l la" marker-end="url(#ah)" /><text x="308" y="100" class="s bg">FLIGHT · armed</text><text x="308" y="112" class="s bg">stream &lt; 0.30 s</text>
+<path d="M495 68V148" class="l" marker-end="url(#ah)" /><text x="503" y="112" class="s bg">above 2.0 m</text>
+<rect x="150" y="254" width="300" height="40" rx="10" class="n "/><text x="300.0" y="278.0" class="t" text-anchor="middle">Axis clamp 40° → vector clamp 40°</text>
+<path d="M105 218C105 238 230 238 230 252" class="l la" marker-end="url(#ah)" />
+<path d="M300 218V252" class="l la" marker-end="url(#ah)" />
+<path d="M495 218C495 238 370 238 370 252" class="l" marker-end="url(#ah)" />
+<rect x="210" y="320" width="180" height="38" rx="10" class="nh "/><text x="300.0" y="343.0" class="t" text-anchor="middle">8 servos on the PCA9685</text>
+<path d="M300 296V318" class="l la flow" marker-end="url(#ah)" /></svg></div>
+        <p class="mt-2 font-mono text-[9px] uppercase tracking-[.18em] text-dim md:hidden">← swipe to see all →</p>
+        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old.</figcaption>
+      </figure>
+      <figure class="card reveal  flex flex-col p-5 md:p-6">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. C — Latency fix</span><span class="text-ice">Fig 4.1</span></div>
+        <div class="-mx-1 mt-4 overflow-x-auto px-1"><svg viewBox="0 0 560 270" class="dg w-full min-w-[540px]" role="img" aria-label="Latency fix: EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms."><line x1="56.0" y1="20" x2="56.0" y2="230" class="gr"/><text x="56.0" y="246" class="s" text-anchor="middle">0</text><line x1="177.0" y1="20" x2="177.0" y2="230" class="gr"/><text x="177.0" y="246" class="s" text-anchor="middle">100</text><line x1="298.0" y1="20" x2="298.0" y2="230" class="gr"/><text x="298.0" y="246" class="s" text-anchor="middle">200</text><line x1="419.0" y1="20" x2="419.0" y2="230" class="gr"/><text x="419.0" y="246" class="s" text-anchor="middle">300</text><line x1="540.0" y1="20" x2="540.0" y2="230" class="gr"/><text x="540.0" y="246" class="s" text-anchor="middle">400</text><line x1="56" y1="230.0" x2="540" y2="230.0" class="gr"/><text x="48" y="233.0" class="s" text-anchor="end">0</text><line x1="56" y1="125.0" x2="540" y2="125.0" class="gr"/><text x="48" y="128.0" class="s" text-anchor="end">0.5</text><line x1="56" y1="20.0" x2="540" y2="20.0" class="gr"/><text x="48" y="23.0" class="s" text-anchor="end">1</text>
+<line x1="56" y1="41.0" x2="540" y2="41.0" stroke="#a8c7ff" stroke-opacity=".35" stroke-dasharray="2 4"/><text x="540" y="54.0" class="s hi" text-anchor="end">90 %</text>
+<path d="M56.0 230.0H128.6V20.0H540.0" class="l" style="stroke:#8794a8;opacity:.6"/>
+<path d="M56.0 230.0H128.6V209.0H152.8V188.0H177.0V167.0H201.2V146.0H225.4V125.0H249.6V104.0H273.8V83.0H298.0V62.0H322.2V41.0H346.4V20.0H370.6V20.0H394.8V20.0H419.0V20.0H443.2V20.0H467.4V20.0H491.6V20.0H515.8V20.0H540.0V20.0H564.2V20.0H588.4V20.0H540.0" class="l" style="stroke:#7f9cc7;stroke-dasharray:6 4;stroke-width:1.8"/>
+<path d="M56.0 230.0H128.6V72.5H152.8V33.1H177.0V23.3H201.2V20.8H225.4V20.2H249.6V20.1H273.8V20.0H298.0V20.0H322.2V20.0H346.4V20.0H370.6V20.0H394.8V20.0H419.0V20.0H443.2V20.0H467.4V20.0H491.6V20.0H515.8V20.0H540.0V20.0H564.2V20.0H588.4V20.0H540.0" class="l la" style="stroke-width:2.6"/>
+<text x="60" y="264" class="s">time (ms) at 50 Hz</text>
+<g transform="translate(331.9 133.4)"><circle cx="-10" cy="-4" r="4" fill="#7f9cc7"/><text class="t" style="fill:#7f9cc7">10-sample average</text><text y="14" class="s">avg delay 90 ms</text></g>
+<g transform="translate(269.0 194.3)"><circle cx="-10" cy="-4" r="4" fill="#a8c7ff"/><text class="t" style="fill:#a8c7ff">EMA · α = 0.75</text><text y="14" class="s">avg delay 6.7 ms</text><text y="26" class="s">90 % in 2 samples</text></g>
+<text x="120.6" y="34.0" class="s" text-anchor="end">input step</text></svg></div>
+        <p class="mt-2 font-mono text-[9px] uppercase tracking-[.18em] text-dim md:hidden">← swipe to see all →</p>
+        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms.</figcaption>
+      </figure>
+      <figure class="card reveal d1 flex flex-col p-5 md:p-6">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. D — Flight phases</span><span class="text-ice">Fig 4.3</span></div>
+        <div class="-mx-1 mt-4 overflow-x-auto px-1"><svg viewBox="0 0 600 270" class="dg w-full min-w-[540px]" role="img" aria-label="Flight phases: Throttle-driven state machine with an any-state failsafe that a watchdog trip latches."><defs>
+<marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
+<marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
+</defs>
+<rect x="10" y="60" width="90" height="60" rx="10" class="nh "/><text x="55.0" y="94.0" class="t" text-anchor="middle">GROUND</text>
+<rect x="173" y="60" width="90" height="60" rx="10" class="n "/><text x="218.0" y="94.0" class="t" text-anchor="middle">TAKEOFF</text>
+<rect x="337" y="60" width="90" height="60" rx="10" class="nh "/><text x="382.0" y="94.0" class="t" text-anchor="middle">FLIGHT</text>
+<rect x="500" y="60" width="90" height="60" rx="10" class="n "/><text x="545.0" y="94.0" class="t" text-anchor="middle">LANDING</text>
+<path d="M102 80H171" class="l la flow" marker-end="url(#ah)" /><text x="136.5" y="70" class="s" text-anchor="middle">thr &gt; 1550</text>
+<path d="M265 80H335" class="l la flow" marker-end="url(#ah)" /><text x="300.0" y="56" class="s" text-anchor="middle">&gt; 1 s and</text><text x="300.0" y="68" class="s" text-anchor="middle">thr &gt; 1550</text>
+<path d="M429 80H498" class="l la flow" marker-end="url(#ah)" /><text x="463.5" y="70" class="s" text-anchor="middle">thr &lt; 1450</text>
+<path d="M498 102H429" class="l" marker-end="url(#ah)" /><text x="463.5" y="118" class="s" text-anchor="middle">thr &gt; 1550</text>
+<path d="M171 102H102" class="l" marker-end="url(#ah)" /><text x="136.5" y="118" class="s" text-anchor="middle">thr at min</text>
+<g stroke="#ff8d8d" stroke-opacity=".55" stroke-dasharray="3 4" fill="none"><path d="M55.0 122V180M218.0 122V180M382.0 122V180M545.0 122V180"/></g>
+<rect x="10" y="180" width="580" height="44" rx="22" class="fs"/><text x="300" y="206" class="t" text-anchor="middle" style="fill:#ff8d8d">FAILSAFE · reachable from any state · a watchdog trip latches it</text>
+<text x="10" y="252" class="s">thr = throttle pulse width (µs)  ·  RC signal lost &gt; 0.5 s → back to GROUND</text></svg></div>
+        <p class="mt-2 font-mono text-[9px] uppercase tracking-[.18em] text-dim md:hidden">← swipe to see all →</p>
+        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">Throttle-driven state machine with an any-state failsafe that a watchdog trip latches.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
