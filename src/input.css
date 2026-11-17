@@ -143,3 +143,7 @@ html,body{overflow-x:clip}
 .dg .flow{stroke-dasharray:5 6;animation:flow 1.4s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-22}}
 .dg .bg{paint-order:stroke;stroke:#0e131c;stroke-width:5px;stroke-linejoin:round}
+.dgm .t{font-size:13px}
+.dgm .s{font-size:10.5px}
+.dg .bdg{fill:#0e131c;stroke:#a8c7ff;stroke-width:1.2}
+.dg .bd,.dg .bd2{fill:#a8c7ff;font-weight:600}
