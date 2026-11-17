@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* colours used inside inline SVG (project thumbnails, diagrams) */
+:root{--c-ink:#e8eef6;--c-signal:#a8c7ff;--c-cobalt:#7f9cc7;--c-mute:#8794a8;color-scheme:dark}
+
+@layer base{
+  html{scroll-behavior:smooth;scroll-padding-top:96px}
+  body{@apply bg-void font-sans text-fg antialiased overflow-x-hidden}
+  ::selection{background:#a8c7ff;color:#080b10}
+  :focus-visible{outline:2px solid #a8c7ff;outline-offset:3px}
+  img,video{@apply block max-w-full}
+  button{@apply cursor-pointer}
+}
+
+@layer components{
+  .wrap{@apply mx-auto w-full max-w-page px-5 md:px-10}
+  .eyebrow{@apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.03] px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[.22em] text-dim}
+  .eyebrow::before{content:'';@apply h-1.5 w-1.5 rounded-full bg-ice shadow-[0_0_10px_#a8c7ff]}
+  .h-sec{@apply font-display text-[clamp(1.8rem,4.2vw,3.5rem)] font-bold uppercase leading-[1.04] tracking-[-.02em]}
+  .h-sec .hl{@apply text-ice}
+  .h-sec .ghost{@apply text-white/25}
+  .lede{@apply max-w-2xl text-[1.02rem] leading-relaxed text-dim}
+  .lede strong{@apply font-semibold text-fg}
+
+  .btn{@apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-[12px] font-bold uppercase tracking-[.12em] transition duration-300}
+  .btn-ice{@apply bg-ice text-void hover:-translate-y-0.5 hover:shadow-[0_10px_40px_-6px_rgba(168,199,255,.55)]}
+  .btn-line{@apply border border-white/20 text-fg hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-void}
+  .btn-ghost{@apply border border-white/20 text-fg hover:border-ice hover:text-ice}
+  .link{@apply inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[.16em] text-ice transition-all hover:gap-3.5}
+
+  .card{@apply rounded-[28px] border border-white/[.08] bg-gradient-to-b from-white/[.06] to-white/[.015]}
+  .tag{@apply inline-block rounded-full border border-white/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[.08em] text-dim}
+  .pill{@apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[.12em]}
+  .pill-hw{@apply bg-ice text-void}
+  .pill-sim{@apply border border-steel/60 bg-void/70 text-steel}
+  .pill-wip{@apply border border-dashed border-white/40 bg-void/70 text-fg}
+  .pill-win{@apply bg-white text-void}
+  .label{@apply flex items-center gap-3 font-mono text-[11px] uppercase tracking-[.2em] text-dim}
+  .label b{@apply font-medium text-ice}
+  .label::after{content:'';@apply h-px flex-1 bg-white/10}
+
+  .kpi .v{@apply font-display text-[clamp(1.6rem,2.6vw,2.4rem)] font-bold leading-none tracking-[-.02em]}
+  .kpi .v small{@apply ml-1 font-mono text-[11px] font-medium tracking-normal text-dim}
+  .kpi .k{@apply mt-2 font-mono text-[10px] uppercase leading-snug tracking-[.1em] text-dim}
+
+  .bul{@apply space-y-2.5}
+  .bul li{@apply relative pl-5 text-[.92rem] leading-relaxed text-dim}
+  .bul li::before{content:'';@apply absolute left-0 top-[.6rem] h-1.5 w-1.5 rounded-full bg-ice}
+  .bul li b,.bul li strong{@apply font-semibold text-fg}
+  .bul li code{@apply font-mono text-[.8em] text-steel}
+  .fig-cap{@apply mt-2.5 font-mono text-[10px] uppercase tracking-[.1em] text-dim}
+}
+
+/* ---------- hero stage ---------- */
+.stage-grid{background-image:linear-gradient(rgba(150,180,230,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(150,180,230,.035) 1px,transparent 1px);
+  background-size:96px 96px;background-position:center top;
+  -webkit-mask-image:radial-gradient(ellipse 70% 65% at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 65% at 50% 40%,#000 20%,transparent 75%)}
+.beam{background:radial-gradient(ellipse 30% 90% at 50% 0,rgba(190,215,255,.16),rgba(150,180,230,.05) 45%,transparent 75%)}
+.fog{background:radial-gradient(ellipse 40% 32% at 50% 58%,rgba(92,124,170,.30),transparent 70%),radial-gradient(ellipse 60% 40% at 30% 70%,rgba(70,96,138,.16),transparent 70%),radial-gradient(ellipse 55% 38% at 72% 66%,rgba(70,96,138,.14),transparent 70%)}
+.floor{background:radial-gradient(ellipse at center,rgba(200,220,255,.22),rgba(120,150,200,.07) 40%,transparent 70%)}
+.drone-shadow{background:radial-gradient(ellipse at center,rgba(0,0,0,.9),transparent 70%)}
+.name-ghost{background:linear-gradient(180deg,rgba(168,196,235,.62),rgba(92,120,160,.22) 55%,rgba(40,56,80,.05) 92%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.outline-text{-webkit-text-stroke:1px rgba(255,255,255,.14);color:transparent}
+.callout{position:absolute;display:none;align-items:center;gap:8px;white-space:nowrap;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#eef1f3}
+.callout i{display:block;width:9px;height:9px;border-radius:9999px;background:#a8c7ff;box-shadow:0 0 0 4px rgba(168,199,255,.18),0 0 14px #a8c7ff}
+.callout span{border:1px solid rgba(255,255,255,.14);background:rgba(5,6,7,.7);backdrop-filter:blur(6px);padding:6px 9px;border-radius:9999px}
+.callout em{display:block;height:1px;width:42px;background:linear-gradient(90deg,#a8c7ff,rgba(255,255,255,.3));font-style:normal}
+
+@media (min-width:1024px){.callout{display:flex}}
+html,body{overflow-x:clip}
+
+/* concentric rings (capstone spec) */
+.rings{background:repeating-radial-gradient(circle at center,transparent 0 58px,rgba(255,255,255,.07) 59px 60px)}
+.radar{background:conic-gradient(from 0deg,rgba(168,199,255,.22),transparent 22%)}
+
+.marquee-track{display:flex;width:max-content}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.show{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+.rotor{transform-box:fill-box;transform-origin:center}
+
+/* video frame */
+.vf{position:relative;overflow:hidden;background:#000;aspect-ratio:16/10;border-radius:22px}
+.vf video,.vf>img{width:100%;height:100%;object-fit:cover}
+.vf video{cursor:pointer}
+.vf .ov{position:absolute;inset:0;z-index:6;display:flex;width:100%;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:0;
+  background:linear-gradient(180deg,rgba(5,6,7,.15),rgba(5,6,7,.55));color:#050607;transition:opacity .25s}
+.vf .ov.hidden{opacity:0;pointer-events:none}
+.vf .ov .ring{display:flex;height:66px;width:66px;align-items:center;justify-content:center;border-radius:9999px;background:#a8c7ff;box-shadow:0 0 0 10px rgba(168,199,255,.15);transition:transform .25s,box-shadow .25s}
+.vf .ov:hover .ring{transform:scale(1.08);box-shadow:0 0 0 16px rgba(168,199,255,.12)}
+.vf .ov .lbl{font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#eef1f3;background:rgba(5,6,7,.6);padding:7px 11px;border-radius:9999px}
+.vf .bar{position:absolute;left:0;bottom:0;z-index:7;height:3px;width:0;background:#a8c7ff;pointer-events:none}
+.vf .rec{position:absolute;left:14px;top:14px;z-index:7;display:flex;align-items:center;gap:7px;border-radius:9999px;background:rgba(5,6,7,.7);backdrop-filter:blur(6px);padding:6px 10px;
+  font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#eef1f3;pointer-events:none}
+.vf .rec i{display:block;width:7px;height:7px;border-radius:9999px;background:#ff4d4d;animation:blink 1.2s infinite}
+.vf .rec.sim i{background:#86a8ff}
+
+/* gallery tiles */
+.shot{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:#000;padding:0;cursor:zoom-in}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.shot:hover img{transform:scale(1.06)}
+.shot.light{background:#eef1f3}.shot.light img{object-fit:contain;padding:8px}
+.shot .cap{position:absolute;inset:auto 0 0 0;padding:22px 10px 8px;text-align:left;color:#fff;font:500 9px/1.3 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(0deg,rgba(5,6,7,.92),transparent)}
+
+/* drawer + lightbox */
+.drawer-back{position:fixed;inset:0;z-index:500;display:none;background:rgba(0,0,0,.6);backdrop-filter:blur(6px)}
+.drawer-back.open{display:block;animation:fadeIn .25s}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:min(940px,100%);overflow-y:auto;background:#0b0d10;border-left:1px solid rgba(255,255,255,.1);animation:slideIn .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes slideIn{from{transform:translateX(70px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.lb{position:fixed;inset:0;z-index:700;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px;background:rgba(3,4,5,.96)}
+.lb.open{display:flex}
+.lb img{max-width:min(1300px,94vw);max-height:80vh;object-fit:contain;border-radius:12px}
+
+/* scroll progress (ice-blue line + tiny UGV) */
+.rail{position:fixed;left:0;right:0;top:0;z-index:400;height:2px;pointer-events:none}
+.rail .f{height:2px;width:0;background:#a8c7ff;box-shadow:0 0 10px #a8c7ff}
+.rail .r{position:absolute;top:2px;left:0;width:24px;height:13px;transform:translateX(-50%)}
+
+.pcard.hide{display:none}
+.lead em{font-style:normal;font-weight:600;color:#eef1f3}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
