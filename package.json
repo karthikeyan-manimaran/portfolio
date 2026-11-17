@@ -5,7 +5,7 @@
   "description": "Static portfolio. Tailwind CSS is compiled to assets/css/tw.css \u2014 run `npm run build` after editing classes.",
   "scripts": {
     "start": "http-server . -p 8080 -c-1 -o",
-    "build": "tailwindcss -c tailwind.config.js -i src/input.css -o assets/css/tw.css --minify",
+    "build": "tailwindcss -c tailwind.config.js -i src/input.css -o assets/css/tw.css --minify && node scripts/stamp.js",
     "watch": "tailwindcss -c tailwind.config.js -i src/input.css -o assets/css/tw.css --watch"
   },
   "devDependencies": {
