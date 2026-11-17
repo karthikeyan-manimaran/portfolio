@@ -52,7 +52,7 @@
 <main>
 <!-- ============ HERO STAGE ============ -->
 <section id="top" class="relative overflow-hidden">
-  <div id="stage" class="relative flex min-h-[100svh] flex-col pt-28 lg:pt-28">
+  <div id="stage" class="relative flex flex-col pt-28 lg:min-h-[100svh]">
     <!-- light, grid, glow -->
     <div class="stage-grid pointer-events-none absolute inset-0"></div>
     <div class="beam pointer-events-none absolute left-1/2 top-0 h-[80%] w-[110vw] -translate-x-1/2 md:w-[70vw]"></div>
@@ -74,18 +74,18 @@
       <span class="eyebrow animate-rise">Open to UAV integration &amp; R&amp;D roles</span>
       <p class="mt-5 animate-rise font-mono text-[11px] uppercase tracking-[.55em] text-dim [animation-delay:.08s]">UAV <span class="text-ice">·</span> UGV <span class="text-ice">·</span> Autonomy</p>
       <h1 class="mt-5 font-display font-extrabold uppercase leading-[.88] tracking-[-.035em]">
-        <span class="block animate-rise text-[clamp(1.5rem,7.5vw,7.8rem)] lg:text-[clamp(2rem,8.4vw,7.8rem)] [animation-delay:.14s]">Karthikeyan</span>
-        <span class="name-ghost block animate-rise text-[clamp(1.5rem,7.5vw,7.8rem)] lg:text-[clamp(2rem,8.4vw,7.8rem)] [animation-delay:.22s]" data-depth="-14">Manimaran</span>
+        <span class="block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] lg:text-[min(8.4vw,7.8rem)] [animation-delay:.14s]">Karthikeyan</span>
+        <span class="name-ghost block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] lg:text-[min(8.4vw,7.8rem)] [animation-delay:.22s]" data-depth="-14">Manimaran</span>
       </h1>
     </div>
 
     <!-- the drone -->
-    <figure class="relative z-[2] mx-auto -mt-[3.9vw] w-[min(820px,88vw)] animate-rise [animation-delay:.35s]">
+    <figure class="relative z-[2] mx-auto -mt-[3.9vw] w-[min(900px,98vw)] animate-rise [animation-delay:.35s]">
       <div data-depth="22" class="will-change-transform">
         <div class="relative animate-hover">
-          <img src="assets/img/capstone/drone-cutout.webp" width="1317" height="571" alt="Karthikeyan's adaptive tilt-motor quadrotor: four pan-tilt motor mounts, Pixhawk 6C Mini and Raspberry Pi 5" class="w-full select-none drop-shadow-[0_30px_60px_rgba(0,0,0,.85)] [filter:drop-shadow(0_0_28px_rgba(120,160,220,.18))_drop-shadow(0_30px_50px_rgba(0,0,0,.8))]" draggable="false"/>
-          <div class="callout" style="right:76%;top:46%;transform:translateY(-50%)"><span>Pan-tilt motor mount ×4</span><em></em><i></i></div>
-          <div class="callout" style="left:57%;top:33%;transform:translateY(-50%)"><i></i><em></em><span>Pixhawk 6C Mini · Pi 5</span></div>
+          <img src="assets/img/capstone/drone-cutout.webp" width="1450" height="571" alt="Karthikeyan's adaptive tilt-motor quadrotor: four pan-tilt motor mounts, Pixhawk 6C Mini and Raspberry Pi 5" class="w-full select-none drop-shadow-[0_30px_60px_rgba(0,0,0,.85)] [filter:drop-shadow(0_0_28px_rgba(120,160,220,.18))_drop-shadow(0_30px_50px_rgba(0,0,0,.8))]" draggable="false"/>
+          <div class="callout" style="right:78.2%;top:46%;transform:translateY(-50%)"><span>Pan-tilt motor mount ×4</span><em></em><i></i></div>
+          <div class="callout" style="left:51.8%;top:33%;transform:translateY(-50%)"><i></i><em></em><span>Pixhawk 6C Mini · Pi 5</span></div>
                   </div>
       </div>
       <div class="drone-shadow mx-auto -mt-[2%] h-8 w-[46%] animate-shadow md:h-12"></div>
@@ -94,7 +94,7 @@
     </figure>
 
     <!-- bottom row -->
-    <div class="wrap relative z-[3] mt-auto grid gap-8 pb-8 pt-6 md:grid-cols-[1fr_auto_1fr] md:items-end">
+    <div class="wrap relative z-[3] -mt-2 grid gap-8 pb-8 pt-0 lg:mt-auto lg:pt-6 md:grid-cols-[1fr_auto_1fr] md:items-end">
       <p class="animate-rise text-[.95rem] leading-relaxed text-dim [animation-delay:.45s] md:max-w-xs">Final-year B.Tech (AI &amp; Robotics) at <span class="font-semibold text-fg">VIT Chennai</span> · robotics intern at <span class="font-semibold text-fg">IIT Tirupati</span>. I take PX4 / ROS&nbsp;2 pipelines from simulation onto real drones.</p>
       <div class="flex animate-rise flex-wrap justify-start gap-3 [animation-delay:.5s] md:justify-center">
         <a href="#capstone" class="btn btn-ice">Explore the build →</a>
@@ -199,7 +199,7 @@
         <div class="rings pointer-events-none absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full"></div>
         <div class="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow rounded-full border border-dashed border-ice/20"></div>
         <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(168,199,255,.12),transparent_65%)]"></div>
-        <img src="assets/img/capstone/drone-cutout-sm.webp" width="760" height="330" alt="The adaptive tilt-motor quadrotor" loading="lazy" class="relative w-[92%] animate-hover drop-shadow-[0_24px_40px_rgba(0,0,0,.85)]"/>
+        <img src="assets/img/capstone/drone-cutout-sm.webp" width="760" height="299" alt="The adaptive tilt-motor quadrotor" loading="lazy" class="relative w-[92%] animate-hover drop-shadow-[0_24px_40px_rgba(0,0,0,.85)]"/>
         <span class="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[.2em] text-dim">PX4 · Pixhawk 6C Mini · Raspberry Pi 5 · ROS 2 Jazzy</span>
       </div>
       <div class="grid gap-4">
