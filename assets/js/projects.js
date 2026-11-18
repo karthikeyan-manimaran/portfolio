@@ -86,7 +86,7 @@ const P_ = [
 
 /* ---------------- 04 SWARM ---------------- */
 {id:'swarm',title:'Autonomous Swarm Rescue — Multi-Drone Search & Rescue',short:'A commander drone coordinates five X500 drones to split a search area and re-assign work when a drone fails.',
- sub:'PX4 · Gazebo · ROS 2 Humble · Micro XRCE-DDS',cat:['uav'],status:'wip',pill:'In development',accent:'a',art:'swarm',tags:['PX4 SITL','Gazebo','ROS 2 Humble','XRCE-DDS','px4_msgs','Python'],
+ sub:'PX4 · Gazebo · ROS 2 Humble · Micro XRCE-DDS',cat:['uav'],status:'wip',pill:'In development',accent:'a',thumb:I+'bg/p_swarm.webp',tags:['PX4 SITL','Gazebo','ROS 2 Humble','XRCE-DDS','px4_msgs','Python'],
  lead:`A simulated disaster-response swarm: an <em>Omnicopter commander</em> manages the mission while <em>five Holybro X500 drones</em> cover the search area, detect potential victims and <em>redistribute tasks</em> if a vehicle fails or loses comms.`,
  links:[{l:'GitHub repository',u:GH+'Autonomous-Swarm-Rescue',pri:1}],
  cards:[
@@ -114,7 +114,7 @@ const P_ = [
  sub:'Holybro X650 + RHINO UGV · Indoor Flight Testing · VIT Chennai',cat:['uav','air-ground'],status:'hw',pill:'Real hardware',accent:'a',thumb:I+'uav/drone_flight.jpg',tags:['PX4','MAVROS','ROS 2','Holybro X650','RHINO UGV','Jetson'],
  lead:`Live indoor flight of a <em>Holybro X650 quadrotor</em> with the RHINO UGV as an autonomous docking target, integrating the same <em>PX4 + MAVROS + ROS 2</em> interface used in simulation.`,
  links:[],
- video:{src:'assets/video/demo2.mp4',poster:I+'uav/drone_flight.jpg',cap:'Drone + RHINO UGV · VIT drone test arena',label:'Play flight demo'},
+ video:{src:'assets/video/demo2.mp4',poster:I+'uav/drone_poster.jpg',cap:'Drone + RHINO UGV · VIT drone test arena',label:'Play flight demo'},
  cards:[
   {t:'Platform',items:['Frame: <b>Holybro X650</b> quadrotor · Controller: <b>PX4</b>','Companion compute: NVIDIA Jetson · Perception: RealSense D435i','Comms: MAVROS over ROS 2 · Ground robot: RHINO UGV']},
   {t:'Context',am:1,items:['Netted indoor arena — safety-compliant UAV test environment','RHINO acts as a moving landing pad for RL docking experiments','Policies trained in Gazebo, same ROS 2 interface on hardware']}
@@ -123,7 +123,7 @@ const P_ = [
 
 /* ---------------- 07 RL DOCKING ---------------- */
 {id:'rl',title:'RL Drone Docking — Precision Landing with Deep RL',short:'SAC vs DDPG on a PX4 Iris quadrotor in a Dockerized PX4–ROS 2–Gazebo stack, with an IR-Lock baseline.',
- sub:'SAC vs DDPG · PX4 SITL · Dockerized Training Pipeline',cat:['uav','ai'],status:'sim',pill:'Simulation',accent:'t',art:'rl',tags:['Python','PX4','SAC','DDPG','Gazebo','ROS 2','Docker'],
+ sub:'SAC vs DDPG · PX4 SITL · Dockerized Training Pipeline',cat:['uav','ai'],status:'sim',pill:'Simulation',accent:'t',thumb:PJ+'rl_gazebo.jpg',tags:['Python','PX4','SAC','DDPG','Gazebo','ROS 2','Docker'],
  lead:`A <em>fully containerized PX4–ROS 2–Gazebo stack</em> that trains a PX4 Iris quadrotor to land on a pad with deep reinforcement learning — reproducible with a single compose command.`,
  links:[{l:'GitHub repository',u:GH+'RL-Drone-Docking-Precision-Landing-with-Deep-Reinforcement-Learning',pri:1}],
  cards:[
@@ -131,6 +131,7 @@ const P_ = [
   {t:'Reproducibility',am:1,items:['Isolated containers for PX4 SITL, ROS 2 bridge and the RL agent (PyTorch)','Multi-process simulation orchestrated with tmux','Fixed beacon-reset and out-of-bounds bugs so episodes run cleanly end to end']}
  ],
  flow:{label:'// Docker stack',boxes:[['PX4 SITL','container 1'],['Gazebo','physics'],['ROS 2 bridge','container 2'],['MAVROS','MAVLink ↔ ROS'],['RL agent','PyTorch'],['SAC / DDPG','policy',1]]},
+ media:[{src:PJ+'rl_gazebo_full.jpg',cap:'Gazebo render of a PX4 x500 above a landing pad with an ArUco marker — recreation of the docking scene (training stack: Gazebo Classic + Iris)'}],
  note:['STACK //','Python · PyTorch · PX4 SITL · ROS 2 · Gazebo · Docker Compose · SAC · DDPG']},
 
 /* ---------------- 08 AUTODOCK ---------------- */
@@ -253,7 +254,7 @@ function drawerHTML(p){
     <p class="fig-cap">${p.video.cap}</p></div>`:'';
   const flow=p.flow?`<div class="mt-10 border-t border-white/10 pt-6"><p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice">${p.flow.label.replace('// ','')}</p><p class="mt-4 font-mono text-[12px] leading-8 text-dim">${p.flow.boxes.map((b,k)=>`${k?'<span class="px-2 text-ice">→</span>':''}<span class="${b[2]?'text-fg':''}">${b[0]}${b[1]?` <span class="text-dim/60">(${b[1]})</span>`:''}</span>`).join('')}</p></div>`:'';
   const cards=p.cards?`<div class="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">${p.cards.map(c=>`<div class="border-t border-white/10 pt-4"><h4 class="mb-3 font-mono text-[11px] font-medium uppercase tracking-[.14em] ${c.am?'text-ice':'text-steel'}">${c.t}</h4><ul class="bul">${c.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div>`:'';
-  const media=p.media?`<div class="mt-12 border-t border-white/10 pt-6"><p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice">Output &amp; gallery <span class="text-dim">— click to enlarge</span></p><div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">${p.media.map(m=>`<button class="shot ${m.light?'light':''}" data-zoom="${m.src}" data-cap="${m.cap}"><img src="${m.src}" alt="${m.cap}" loading="lazy"/><span class="cap">${m.cap}</span></button>`).join('')}</div></div>`:'';
+  const media=p.media?`<div class="mt-12 border-t border-white/10 pt-6"><p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice">Output &amp; gallery <span class="text-dim">— click to enlarge</span></p><div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">${p.media.map(m=>`<button class="shot ${m.light?'light':''}" data-zoom="${m.src}" data-cap="${m.cap}"><img src="${m.src}" alt="${m.cap}" decoding="async"/><span class="cap">${m.cap}</span></button>`).join('')}</div></div>`:'';
   const links=p.links&&p.links.length?`<div class="mt-7 flex flex-wrap gap-3">${p.links.map(l=>`<a class="btn ${l.pri?'btn-ice':'btn-line'}" href="${l.u}" target="_blank" rel="noopener">${l.l} ↗</a>`).join('')}</div>`:'';
   const note=p.note?`<p class="mt-12 border-t border-white/10 pt-5 font-mono text-[11px] leading-relaxed text-dim"><span class="text-ice">${p.note[0]}</span> ${p.note[1]}</p>`:'';
   return `<div class="p-6 md:p-10">
@@ -278,8 +279,10 @@ function ensureDrawer(){
 let lastFocus=null;
 function openProject(id,push=true){
   const p=byId[id];if(!p)return;ensureDrawer();lastFocus=document.activeElement;
-  const d=back.querySelector('.drawer');d.innerHTML=drawerHTML(p);d.scrollTop=0;
-  d.style.setProperty('--bgimg','url('+new URL(`assets/img/bg/p_${(BGMAP[p.id]||p.id)}.webp`,document.baseURI).href+')');
+  const d=back.querySelector('.drawer');
+  const bgUrl=new URL(`assets/img/bg/p_${(BGMAP[p.id]||p.id)}.webp`,document.baseURI).href;
+  d.innerHTML=`<div class="dbg" style="background-image:url(${bgUrl})"></div><div class="dbody">${drawerHTML(p)}</div>`;d.scrollTop=0;
+  const bgi=new Image();bgi.onload=bgi.onerror=()=>{const el=d.querySelector('.dbg');if(el)el.classList.add('ready')};bgi.src=bgUrl;
   back.classList.add('open');document.body.style.overflow='hidden';
   window.initVideos&&initVideos(d);d.querySelector('.dclose').focus();
   if(push)history.replaceState(null,'','#'+p.id);
@@ -315,5 +318,8 @@ function mount(){
   if(location.hash&&byId[location.hash.slice(1)])openProject(location.hash.slice(1),false);
 }
 mount();
+(window.requestIdleCallback||setTimeout)(()=>P_.forEach(p=>{const i=new Image();i.src=new URL(`assets/img/bg/p_${p.id}.webp`,document.baseURI).href;
+  (p.media||[]).slice(0,3).forEach(m=>{const g=new Image();g.src=m.src})}),{timeout:2500});
+document.addEventListener('pointerover',e=>{const c=e.target.closest&&e.target.closest('.pcard');if(c&&!c.dataset.warm){c.dataset.warm=1;const i=new Image();i.src=new URL(`assets/img/bg/p_${c.dataset.id}.webp`,document.baseURI).href}});
 addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id])openProject(id,false)});
 })();

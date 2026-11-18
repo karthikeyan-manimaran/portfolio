@@ -19,11 +19,22 @@ window.observeReveals=(r=document)=>$$('.reveal:not(.show)',r).forEach(el=>io.ob
 observeReveals();
 
 /* ---------- active section in nav ---------- */
-const secs=$$('section[id]').filter(s=>$(`[data-nav="${s.id}"]`));
+const secs=$$('section[id]');
 if(secs.length){
   const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){
     $$('[data-nav]').forEach(a=>a.classList.toggle('text-ice',a.dataset.nav===e.target.id))}}),{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(s=>so.observe(s));
+}
+
+/* ---------- continuous background: one fixed stage, the layer follows the section in view ---------- */
+const fxLayers=$$('#bgfx .fx');
+if(fxLayers.length){
+  const setOn=k=>fxLayers.forEach(l=>l.classList.toggle('on',l.dataset.k===k));
+  const bo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setOn(e.target.dataset.bg)}),{rootMargin:'-42% 0px -42% 0px'});
+  $$('[data-bg]').forEach(s=>bo.observe(s));
+  const stage=$('#bgfx');let pt=false;
+  const pp=()=>{pt=false;const h=document.documentElement.scrollHeight-innerHeight;const p=h>0?Math.min(1,scrollY/h):0;stage.style.setProperty('--py',((.5-p)*70).toFixed(1)+'px')};
+  addEventListener('scroll',()=>{if(!pt){pt=true;requestAnimationFrame(pp)}},{passive:true});pp();
 }
 
 /* ---------- hero parallax: drone follows the cursor, ghost name drifts the other way ---------- */

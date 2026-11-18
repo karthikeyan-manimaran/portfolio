@@ -117,8 +117,8 @@ html,body{overflow-x:clip}
 /* drawer + lightbox */
 .drawer-back{position:fixed;inset:0;z-index:500;display:none;background:rgba(0,0,0,.6);backdrop-filter:blur(6px)}
 .drawer-back.open{display:block;animation:fadeIn .25s}
-.drawer{position:absolute;right:0;top:0;bottom:0;width:min(940px,100%);overflow-y:auto;background:#0b0d10;border-left:1px solid rgba(255,255,255,.1);animation:slideIn .4s cubic-bezier(.2,.7,.2,1)}
-@keyframes slideIn{from{transform:translateX(70px);opacity:0}to{transform:none;opacity:1}}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:min(940px,100%);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:#0b0d10;border-left:1px solid rgba(255,255,255,.1);animation:slideIn .28s ease-out}
+@keyframes slideIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .lb{position:fixed;inset:0;z-index:700;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px;background:rgba(3,4,5,.96)}
@@ -161,17 +161,24 @@ html,body{overflow-x:clip}
 /* figures sit directly on the page (no card frames) */
 .fig{border-top:1px solid rgba(255,255,255,.1);padding-top:20px}
 
-/* photographic section backgrounds: own footage, graded to the theme, kept faint */
-.has-bg{position:relative;isolation:isolate}
-.bg{position:absolute;inset:0 0 auto 0;height:min(100%,960px);z-index:-1;pointer-events:none;background-size:cover;background-position:var(--p,center);opacity:var(--o,.2);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%)}
-.bg.top{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 55%,transparent 100%)}
 /* subtle film grain so flat areas read as photographic, not rendered */
 body::after{content:'';position:fixed;inset:0;z-index:600;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 /* case-file panel: the project's own image behind the content */
-.drawer{background:linear-gradient(180deg,rgba(9,12,17,.80) 0,rgba(9,12,17,.90) 420px,rgba(9,12,17,.95) 100%),var(--bgimg,none) center top/cover fixed,#0b0d10!important}
 
-/* subject backgrounds: centred, shown near native size (never stretched), edges dissolve on every side */
-.bg.obj{inset:0 auto auto 50%;width:min(100%,var(--w,1300px));transform:translateX(-50%);background-size:contain;background-repeat:no-repeat;background-position:center;
-  -webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 22%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 22%,transparent 100%)}
+
+/* ---- continuous page background: one fixed stage, layers cross-fade as sections scroll past ---- */
+html{scrollbar-gutter:stable}
+#bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#bgfx .fx{position:absolute;inset:-9% 0;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1);background-size:cover;background-position:center;
+  transform:translate3d(0,var(--py,0px),0);will-change:opacity,transform}
+#bgfx .fx.on{opacity:var(--o,.25)}
+#bgfx .fx.obj{inset:-9% auto -9% 50%;width:min(100vw,var(--w,1300px));transform:translate3d(-50%,var(--py,0px),0);background-size:contain;background-repeat:no-repeat;
+  -webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 24%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 24%,transparent 100%)}
+#bgfx::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 85% 75% at 50% 42%,transparent 38%,rgba(8,11,16,.55) 100%)}
+/* case-file panel: project image sits at the top at its own size, then melts into the panel colour */
+.drawer{background-color:#0a0d12;background-repeat:no-repeat;background-position:center top;background-size:100% auto}
+.drawer .dbg{position:absolute;inset:0 0 auto 0;height:min(100%,640px);pointer-events:none;z-index:0;background-size:100% auto;background-repeat:no-repeat;background-position:center top;opacity:0;transition:opacity .6s ease;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 35%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 35%,transparent 100%)}
+.drawer>.dbody{position:relative;z-index:1}
+.drawer .dbg.ready{opacity:.34}
