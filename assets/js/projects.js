@@ -228,6 +228,8 @@ const byId=Object.fromEntries(P_.map(p=>[p.id,p]));
 /* keep old deep links (projects.html#p1 …) working */
 Object.entries({p1:'slam',p2:'uavhw','mine-project':'mine',p3:'rl',p4:'autodock',p5:'monovo',p6:'codeopt',p7:'eva',p8:'ipl'}).forEach(([k,v])=>byId[k]=byId[v]);
 
+/* old deep-link aliases and projects without their own image reuse a related one */
+const BGMAP={p1:'slam',p2:'uavhw','mine-project':'mine',p3:'rl',p4:'autodock',p5:'monovo',p6:'codeopt',p7:'eva',p8:'ipl'};
 const CAT={uav:'UAV',ugv:'UGV','air-ground':'Air–Ground',perception:'Perception',ai:'AI/ML',software:'Software'};
 const stCls={hw:'st-hw',sim:'st-sim',wip:'st-wip','':'st-win'};
 const num=p=>String(P_.indexOf(p)+1).padStart(2,'0');
@@ -277,6 +279,7 @@ let lastFocus=null;
 function openProject(id,push=true){
   const p=byId[id];if(!p)return;ensureDrawer();lastFocus=document.activeElement;
   const d=back.querySelector('.drawer');d.innerHTML=drawerHTML(p);d.scrollTop=0;
+  d.style.setProperty('--bgimg','url('+new URL(`assets/img/bg/p_${(BGMAP[p.id]||p.id)}.webp`,document.baseURI).href+')');
   back.classList.add('open');document.body.style.overflow='hidden';
   window.initVideos&&initVideos(d);d.querySelector('.dclose').focus();
   if(push)history.replaceState(null,'','#'+p.id);
