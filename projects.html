@@ -6,81 +6,75 @@
 <title>Projects — Karthikeyan Manimaran</title>
 <meta name="description" content="Project archive: adaptive tilt-motor UAV, UAV–UGV cooperative planning, aerial terrain mapping, swarm rescue, SLAM, deep-RL docking and more."/>
 <meta property="og:image" content="assets/img/og-cover.jpg"/>
-<meta name="theme-color" content="#050607"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23c6ff3a'/%3E%3Cpath d='M9 9l14 14M23 9 9 23' stroke='%23050607' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"/>
+<meta name="theme-color" content="#080b10"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23a8c7ff'/%3E%3Cpath d='M9 9l14 14M23 9 9 23' stroke='%23080b10' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="assets/css/tw.css?v=1ba588ce"/>
+<link rel="stylesheet" href="assets/css/tw.css?v=a8d68ab0"/>
 </head>
 <body>
 
-<header class="fixed inset-x-0 top-4 z-[300]">
-  <div class="wrap">
-    <div id="navbar" class="flex h-14 items-center justify-between rounded-full border border-white/10 bg-void/40 pl-4 pr-2 backdrop-blur-xl transition-colors duration-300">
-      <a href="index.html" class="flex items-center gap-2.5" aria-label="Home">
-        <span class="grid h-8 w-8 place-items-center rounded-[10px] bg-ice"><svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#050607" stroke-width="5" stroke-linecap="round"><path d="M7 7l18 18M25 7 7 25"/></svg></span>
-        <span class="font-display text-[11px] font-bold uppercase tracking-[.08em] sm:text-[12px]">Karthikeyan Manimaran</span>
-      </a>
-      <nav class="hidden items-center gap-1 lg:flex" aria-label="Primary">
-        <a href="index.html#about" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">About</a>
-        <a href="index.html#capstone" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Capstone</a>
-        <a href="index.html#experience" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Experience</a>
-        <a href="projects.html" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-ice">Projects</a>
-        <a href="index.html#contact" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Contact</a>
-      </nav>
-      <div class="flex items-center gap-2">
-        <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="btn btn-ice hidden !py-2.5 sm:inline-flex">Résumé ↓</a>
-        <button id="burger" class="btn btn-line !px-4 !py-2.5 lg:hidden" aria-label="Menu" aria-expanded="false">Menu</button>
-      </div>
+<header id="navbar" class="fixed inset-x-0 top-0 z-[300] border-b border-white/10 bg-void/60 backdrop-blur-md transition-colors duration-300">
+  <div class="wrap flex h-16 items-center justify-between">
+    <a href="index.html" class="font-display text-[12px] font-semibold uppercase tracking-[.1em]" aria-label="Home">Karthikeyan Manimaran</a>
+    <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
+      <a href="index.html#about" class="text-[13px] font-semibold text-dim transition hover:text-fg">About</a>
+      <a href="index.html#capstone" class="text-[13px] font-semibold text-dim transition hover:text-fg">Capstone</a>
+      <a href="index.html#experience" class="text-[13px] font-semibold text-dim transition hover:text-fg">Experience</a>
+      <a href="projects.html" class="text-[13px] font-semibold text-ice">Projects</a>
+      <a href="index.html#contact" class="text-[13px] font-semibold text-dim transition hover:text-fg">Contact</a>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="link hidden sm:inline-flex">Résumé ↓</a>
+      <button id="burger" class="font-mono text-[11px] uppercase tracking-[.16em] lg:hidden" aria-label="Menu" aria-expanded="false">Menu</button>
     </div>
-    <div id="menu" class="mt-2 hidden rounded-3xl border border-white/10 bg-void/95 p-5 backdrop-blur-xl lg:hidden">
-      <div class="flex flex-col gap-4 text-[15px] font-semibold">
-        <a href="index.html">Home</a><a href="index.html#capstone">Capstone</a><a href="index.html#experience">Experience</a><a href="index.html#contact">Contact</a>
-        <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="text-ice">Résumé ↓</a>
-      </div>
+  </div>
+  <div id="menu" class="hidden border-t border-white/10 bg-void lg:hidden">
+    <div class="wrap flex flex-col gap-4 py-5 text-[15px] font-semibold">
+      <a href="index.html">Home</a><a href="index.html#capstone">Capstone</a><a href="index.html#experience">Experience</a><a href="index.html#contact">Contact</a>
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="text-ice">Résumé ↓</a>
     </div>
   </div>
 </header>
 
 <main>
-  <section class="relative overflow-hidden pb-16 pt-36 lg:pb-20 lg:pt-44">
+  <section class="relative overflow-hidden border-b border-white/10 pb-14 pt-36 lg:pb-20 lg:pt-44">
     <div class="stage-grid pointer-events-none absolute inset-0"></div>
     <div class="beam pointer-events-none absolute left-1/2 top-0 h-full w-[110vw] -translate-x-1/2 md:w-[60vw]"></div>
-    <div class="wrap relative text-center">
-      <span class="eyebrow animate-rise">Project archive · 16 systems</span>
-      <h1 class="mt-7 animate-rise font-display text-[clamp(2.2rem,9vw,8rem)] font-extrabold uppercase leading-[.88] tracking-[-.035em] [animation-delay:.1s]">Every<br/><span class="name-ghost">build.</span></h1>
-      <p class="lede mx-auto mt-8 animate-rise text-center [animation-delay:.2s]">Capstone hardware, air–ground teams, SLAM, RL and full-stack apps. Open any card for the <strong>case file</strong> — architecture, quantified results, engineering decisions and media.</p>
-      <div class="mt-6 flex animate-rise flex-wrap justify-center gap-2 [animation-delay:.3s]"><span class="pill pill-hw">Hardware</span><span class="pill pill-sim">Simulation</span><span class="pill pill-wip">In progress</span></div>
+    <div class="wrap relative">
+      <p class="sec-label animate-rise"><span>PRJ</span> Project archive · 16 systems</p>
+      <h1 class="mt-8 animate-rise font-display text-[clamp(2.4rem,8vw,7rem)] font-extrabold uppercase leading-[.9] tracking-[-.035em] [animation-delay:.1s]">Every<br/><span class="name-ghost">build.</span></h1>
+      <p class="lede mt-8 animate-rise [animation-delay:.2s]">Capstone hardware, air–ground teams, SLAM, RL and full-stack apps. Open any project for the <strong>case file</strong> — architecture, quantified results, engineering decisions and the real output images.</p>
+      <p class="mt-6 flex animate-rise flex-wrap gap-x-6 gap-y-2 [animation-delay:.3s]"><span class="st st-hw">Hardware</span><span class="st st-sim">Simulation</span><span class="st st-wip">In progress</span></p>
     </div>
   </section>
 
-  <section class="pb-24 lg:pb-32">
+  <section class="py-12 lg:py-16">
     <div class="wrap">
-      <div id="filters" class="sticky top-[84px] z-40 mb-8 flex flex-wrap items-center gap-2 rounded-[28px] border border-white/10 bg-void/80 p-2 backdrop-blur-xl max-lg:static" role="group" aria-label="Filter projects">
-        <button data-f="all" aria-pressed="true" class="btn btn-ghost !px-4 !py-2">All</button>
-        <button data-f="uav" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">UAV</button>
-        <button data-f="ugv" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">UGV</button>
-        <button data-f="air-ground" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">Air–Ground</button>
-        <button data-f="perception" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">SLAM &amp; Perception</button>
-        <button data-f="ai" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">AI / ML</button>
-        <button data-f="software" aria-pressed="false" class="btn btn-ghost !px-4 !py-2">Software</button>
-        <span id="fcount" class="ml-auto pr-3 font-mono text-[10px] uppercase tracking-[.16em] text-dim max-sm:w-full max-sm:pl-3"></span>
+      <div id="filters" class="sticky top-16 z-40 -mx-5 mb-10 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-white/10 bg-void/85 px-5 py-4 backdrop-blur-md max-lg:static md:-mx-10 md:px-10" role="group" aria-label="Filter projects">
+        <button data-f="all" aria-pressed="true" class="ftab">All</button>
+        <button data-f="uav" aria-pressed="false" class="ftab">UAV</button>
+        <button data-f="ugv" aria-pressed="false" class="ftab">UGV</button>
+        <button data-f="air-ground" aria-pressed="false" class="ftab">Air–Ground</button>
+        <button data-f="perception" aria-pressed="false" class="ftab">SLAM &amp; Perception</button>
+        <button data-f="ai" aria-pressed="false" class="ftab">AI / ML</button>
+        <button data-f="software" aria-pressed="false" class="ftab">Software</button>
+        <span id="fcount" class="ml-auto font-mono text-[10px] uppercase tracking-[.16em] text-dim max-sm:w-full"></span>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 [grid-auto-flow:dense]" data-grid="all" data-feat="capstone,uavugv"></div>
+      <div class="grid gap-x-8 gap-y-14 sm:grid-cols-2 [grid-auto-flow:dense]" data-grid="all" data-feat="capstone,uavugv"></div>
     </div>
   </section>
 </main>
 
-<footer class="relative overflow-hidden border-t border-white/[.07] bg-surface">
-  <div class="wrap flex flex-col justify-between gap-3 py-8 font-mono text-[10px] uppercase tracking-[.16em] text-dim md:flex-row">
+<footer class="border-t border-white/10 bg-surface">
+  <div class="wrap flex flex-col justify-between gap-3 py-7 font-mono text-[10px] uppercase tracking-[.16em] text-dim md:flex-row">
     <span>© 2026 Karthikeyan Manimaran · karthikeyanm19112005@gmail.com</span>
-    <span class="flex gap-5"><a class="hover:text-ice" href="index.html">← Home</a><a class="hover:text-ice" href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener">GitHub</a><a class="hover:text-ice" href="#">↑ Top</a></span>
+    <span class="flex gap-6"><a class="hover:text-ice" href="index.html">← Home</a><a class="hover:text-ice" href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener">GitHub</a><a class="hover:text-ice" href="#">↑ Top</a></span>
   </div>
-  <div aria-hidden="true" class="pointer-events-none select-none text-center font-display text-[17vw] font-extrabold uppercase leading-[.78] tracking-[-.04em] text-white/[.035]">Manimaran</div>
 </footer>
 
 <script src="assets/js/main.js?v=3b09c270"></script>
-<script src="assets/js/projects.js?v=e2839302"></script>
+<script src="assets/js/projects.js?v=1b5ac1ff"></script>
 </body>
 </html>

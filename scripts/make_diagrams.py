@@ -203,15 +203,15 @@ m_ph = m_ph  # (defined above)
 m_arch,m_hyb,m_lat,m_ph=[_own(x) for x in (m_arch,m_hyb,m_lat,m_ph)]
 
 def card(n, title, tag, vb, svg, mvb, msvg, cap, delay=''):
-    return f"""      <figure class="card reveal {delay} flex flex-col p-5 md:p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. {n} — {title}</span><span class="text-ice">{tag}</span></div>
-        <div class="mt-4 hidden overflow-x-auto md:block"><svg viewBox="{vb}" class="dg w-full" role="img" aria-label="{title}: {cap}">{svg}</svg></div>
-        <svg viewBox="{mvb}" class="dg dgm mt-4 w-full md:hidden" role="img" aria-label="{title}: {cap}">{msvg}</svg>
-        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">{cap}</figcaption>
+    return f"""      <figure class="fig reveal {delay}">
+        <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim"><span class="text-ice">{n}</span> — {title}</span><span class="text-dim">{tag}</span></div>
+        <div class="mt-5 hidden overflow-x-auto md:block"><svg viewBox="{vb}" class="dg w-full" role="img" aria-label="{title}: {cap}">{svg}</svg></div>
+        <svg viewBox="{mvb}" class="dg dgm mt-5 w-full md:hidden" role="img" aria-label="{title}: {cap}">{msvg}</svg>
+        <figcaption class="mt-4 max-w-md text-[.82rem] leading-relaxed text-dim">{cap}</figcaption>
       </figure>"""
 
 
-block = '''    <div class="mt-4 grid gap-4 md:grid-cols-2" id="capstone-figs">
+block = '''    <div class="mt-4 grid gap-x-12 gap-y-14 md:grid-cols-2" id="capstone-figs">
 ''' + '\n'.join([
     card('A', 'System architecture', 'Fig 3.1', '0 0 600 316', arch, '0 0 360 590', m_arch, 'PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it.', ''),
     card('B', 'Hybrid controller', 'Fig 4.2', '0 0 600 370', hyb, '0 0 360 480', m_hyb, 'Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old.', 'd1'),
@@ -219,7 +219,7 @@ block = '''    <div class="mt-4 grid gap-4 md:grid-cols-2" id="capstone-figs">
     card('D', 'Flight phases', 'Fig 4.3', '0 0 600 270', ph, '0 0 360 540', m_ph, 'Throttle-driven state machine with an any-state failsafe that a watchdog trip latches.', 'd1'),
 ]) + '\n    </div>\n'
 s = open(H, encoding='utf8').read()
-pat2 = re.compile(r'    <div class="mt-4 grid gap-4 md:grid-cols-2" id="capstone-figs">.*?\n    </div>\n(?=  </div>\n</section>)', re.S)
+pat2 = re.compile(r'    <div class="[^"]*" id="capstone-figs">.*?\n    </div>\n(?=  </div>\n</section>)', re.S)
 if not pat2.search(s):
     sys.exit('block not found')
 s = pat2.sub(lambda m: block, s, 1)

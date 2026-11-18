@@ -9,111 +9,90 @@
 <meta property="og:description" content="A quadrotor that tilts its thrust to land on slopes, a UAV–UGV team that plans from the air, GPS-denied SLAM — built on real hardware."/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="assets/img/og-cover.jpg"/>
-<meta name="theme-color" content="#050607"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23c6ff3a'/%3E%3Cpath d='M9 9l14 14M23 9 9 23' stroke='%23050607' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"/>
+<meta name="theme-color" content="#080b10"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23a8c7ff'/%3E%3Cpath d='M9 9l14 14M23 9 9 23' stroke='%23080b10' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="preload" as="image" href="assets/img/capstone/drone-cutout.webp" type="image/webp"/>
-<link rel="stylesheet" href="assets/css/tw.css?v=1ba588ce"/>
+<link rel="stylesheet" href="assets/css/tw.css?v=a8d68ab0"/>
 </head>
 <body>
 
-<!-- ============ FLOATING NAV ============ -->
-<header class="fixed inset-x-0 top-4 z-[300]">
-  <div class="wrap">
-    <div id="navbar" class="flex h-14 items-center justify-between rounded-full border border-white/10 bg-void/40 pl-4 pr-2 backdrop-blur-xl transition-colors duration-300">
-      <a href="#top" class="flex items-center gap-2.5" aria-label="Home">
-        <span class="grid h-8 w-8 place-items-center rounded-[10px] bg-ice"><svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#050607" stroke-width="5" stroke-linecap="round"><path d="M7 7l18 18M25 7 7 25"/></svg></span>
-        <span class="font-display text-[11px] font-bold uppercase tracking-[.08em] sm:text-[12px]">Karthikeyan Manimaran</span>
-      </a>
-      <nav class="hidden items-center gap-1 lg:flex" aria-label="Primary">
-        <a data-nav="about" href="#about" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">About</a>
-        <a data-nav="capstone" href="#capstone" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Capstone</a>
-        <a data-nav="experience" href="#experience" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Experience</a>
-        <a data-nav="demos" href="#demos" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Demos</a>
-        <a href="projects.html" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Projects</a>
-        <a data-nav="contact" href="#contact" class="rounded-full px-3.5 py-2 text-[13px] font-semibold text-dim transition hover:text-fg">Contact</a>
-      </nav>
-      <div class="flex items-center gap-2">
-        <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="btn btn-ice hidden !py-2.5 sm:inline-flex">Résumé ↓</a>
-        <button id="burger" class="btn btn-line !px-4 !py-2.5 lg:hidden" aria-label="Menu" aria-expanded="false">Menu</button>
-      </div>
+<!-- ============ TOP BAR ============ -->
+<header id="navbar" class="fixed inset-x-0 top-0 z-[300] border-b border-white/10 bg-void/60 backdrop-blur-md transition-colors duration-300">
+  <div class="wrap flex h-16 items-center justify-between">
+    <a href="#top" class="font-display text-[12px] font-semibold uppercase tracking-[.1em]" aria-label="Home">Karthikeyan Manimaran</a>
+    <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
+      <a data-nav="about" href="#about" class="text-[13px] font-semibold text-dim transition hover:text-fg">About</a>
+      <a data-nav="capstone" href="#capstone" class="text-[13px] font-semibold text-dim transition hover:text-fg">Capstone</a>
+      <a data-nav="experience" href="#experience" class="text-[13px] font-semibold text-dim transition hover:text-fg">Experience</a>
+      <a data-nav="demos" href="#demos" class="text-[13px] font-semibold text-dim transition hover:text-fg">Demos</a>
+      <a href="projects.html" class="text-[13px] font-semibold text-dim transition hover:text-fg">Projects</a>
+      <a data-nav="contact" href="#contact" class="text-[13px] font-semibold text-dim transition hover:text-fg">Contact</a>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="link hidden sm:inline-flex">Résumé ↓</a>
+      <button id="burger" class="font-mono text-[11px] uppercase tracking-[.16em] lg:hidden" aria-label="Menu" aria-expanded="false">Menu</button>
     </div>
-    <div id="menu" class="mt-2 hidden rounded-3xl border border-white/10 bg-void/95 p-5 backdrop-blur-xl lg:hidden">
-      <div class="flex flex-col gap-4 text-[15px] font-semibold">
-        <a href="#about">About</a><a href="#capstone">Capstone</a><a href="#experience">Experience</a><a href="#demos">Demos</a><a href="projects.html">Projects</a><a href="#contact">Contact</a>
-        <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="text-ice">Résumé ↓</a>
-      </div>
+  </div>
+  <div id="menu" class="hidden border-t border-white/10 bg-void lg:hidden">
+    <div class="wrap flex flex-col gap-4 py-5 text-[15px] font-semibold">
+      <a href="#about">About</a><a href="#capstone">Capstone</a><a href="#experience">Experience</a><a href="#demos">Demos</a><a href="projects.html">Projects</a><a href="#contact">Contact</a>
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="text-ice">Résumé ↓</a>
     </div>
   </div>
 </header>
 
 <main>
-<!-- ============ HERO STAGE ============ -->
+<!-- ============ HERO ============ -->
 <section id="top" class="relative overflow-hidden">
   <div id="stage" class="relative flex flex-col pt-28 lg:min-h-[100svh]">
-    <!-- light, grid, glow -->
     <div class="stage-grid pointer-events-none absolute inset-0"></div>
     <div class="beam pointer-events-none absolute left-1/2 top-0 h-[80%] w-[110vw] -translate-x-1/2 md:w-[70vw]"></div>
     <div class="fog pointer-events-none absolute inset-0"></div>
     <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-void to-transparent"></div>
 
-    <!-- side rails (like a product page) -->
     <div class="pointer-events-none absolute left-6 top-1/2 hidden -translate-y-1/2 xl:block">
       <p class="origin-center -rotate-90 whitespace-nowrap font-mono text-[10px] uppercase tracking-[.4em] text-white/30">Scan · Plan · Fly · <span class="text-ice/70">Drive</span></p>
     </div>
-    <div class="absolute right-6 top-1/2 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
-      <a href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener" aria-label="GitHub" class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-dim transition hover:border-ice hover:text-ice"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
-      <a href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-dim transition hover:border-ice hover:text-ice"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="mailto:karthikeyanm19112005@gmail.com" aria-label="Email" class="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-dim transition hover:border-ice hover:text-ice"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></a>
-    </div>
 
-    <!-- title -->
     <div class="wrap relative z-[1] text-center">
-      <span class="eyebrow animate-rise">Open to UAV integration &amp; R&amp;D roles</span>
-      <p class="mt-5 animate-rise font-mono text-[11px] uppercase tracking-[.55em] text-dim [animation-delay:.08s]">UAV <span class="text-ice">·</span> UGV <span class="text-ice">·</span> Autonomy</p>
+      <p class="animate-rise font-mono text-[11px] uppercase tracking-[.3em] text-dim">UAV <span class="text-ice">·</span> UGV <span class="text-ice">·</span> Autonomy</p>
       <h1 class="mt-5 font-display font-extrabold uppercase leading-[.88] tracking-[-.035em]">
-        <span class="block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] lg:text-[min(8.4vw,7.8rem)] [animation-delay:.14s]">Karthikeyan</span>
-        <span class="name-ghost block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] lg:text-[min(8.4vw,7.8rem)] [animation-delay:.22s]" data-depth="-14">Manimaran</span>
+        <span class="block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] [animation-delay:.14s] lg:text-[min(8.4vw,7.8rem)]">Karthikeyan</span>
+        <span class="name-ghost block animate-rise whitespace-nowrap text-[calc((100vw-2.5rem)/9.5)] [animation-delay:.22s] lg:text-[min(8.4vw,7.8rem)]" data-depth="-14">Manimaran</span>
       </h1>
     </div>
 
-    <!-- the drone -->
     <figure class="relative z-[2] mx-auto -mt-[3.9vw] w-[min(900px,98vw)] animate-rise [animation-delay:.35s]">
       <div data-depth="22" class="will-change-transform">
         <div class="relative animate-hover">
           <img src="assets/img/capstone/drone-cutout.webp" width="1450" height="571" alt="Karthikeyan's adaptive tilt-motor quadrotor: four pan-tilt motor mounts, Pixhawk 6C Mini and Raspberry Pi 5" class="w-full select-none drop-shadow-[0_30px_60px_rgba(0,0,0,.85)] [filter:drop-shadow(0_0_28px_rgba(120,160,220,.18))_drop-shadow(0_30px_50px_rgba(0,0,0,.8))]" draggable="false"/>
           <div class="callout" style="right:78.2%;top:46%;transform:translateY(-50%)"><span>Pan-tilt motor mount ×4</span><em></em><i></i></div>
           <div class="callout" style="left:51.8%;top:33%;transform:translateY(-50%)"><i></i><em></em><span>Pixhawk 6C Mini · Pi 5</span></div>
-                  </div>
+        </div>
       </div>
       <div class="drone-shadow mx-auto -mt-[2%] h-8 w-[46%] animate-shadow md:h-12"></div>
       <div class="floor pointer-events-none absolute -bottom-10 left-1/2 h-40 w-[90%] -translate-x-1/2"></div>
       <figcaption class="sr-only">Final-year capstone — adaptive takeoff and landing multirotor</figcaption>
     </figure>
 
-    <!-- bottom row -->
-    <div class="wrap relative z-[3] -mt-2 grid gap-8 pb-8 pt-0 lg:mt-auto lg:pt-6 md:grid-cols-[1fr_auto_1fr] md:items-end">
+    <div class="wrap relative z-[3] -mt-2 grid gap-8 pb-8 pt-0 md:grid-cols-[1fr_auto_1fr] md:items-end lg:mt-auto lg:pt-6">
       <p class="animate-rise text-[.95rem] leading-relaxed text-dim [animation-delay:.45s] md:max-w-xs">Final-year B.Tech (AI &amp; Robotics) at <span class="font-semibold text-fg">VIT Chennai</span> · robotics intern at <span class="font-semibold text-fg">IIT Tirupati</span>. I take PX4 / ROS&nbsp;2 pipelines from simulation onto real drones.</p>
-      <div class="flex animate-rise flex-wrap justify-start gap-3 [animation-delay:.5s] md:justify-center">
+      <div class="flex animate-rise flex-wrap items-center gap-6 [animation-delay:.5s] md:justify-center">
         <a href="#capstone" class="btn btn-ice">Explore the build →</a>
-        <a href="projects.html" class="btn btn-line">All 16 projects</a>
+        <a href="projects.html" class="link">All 16 projects →</a>
       </div>
-      <dl class="grid animate-rise grid-cols-3 gap-4 [animation-delay:.55s] md:justify-self-end md:text-right">
-        <div><dt class="font-mono text-[9px] uppercase tracking-[.18em] text-dim">All-up</dt><dd class="font-display text-lg font-bold">2.111<span class="text-xs text-dim"> kg</span></dd></div>
-        <div><dt class="font-mono text-[9px] uppercase tracking-[.18em] text-dim">Servos</dt><dd class="font-display text-lg font-bold">8</dd></div>
-        <div><dt class="font-mono text-[9px] uppercase tracking-[.18em] text-dim">Tilt</dt><dd class="font-display text-lg font-bold">±40°</dd></div>
-      </dl>
+      <p class="animate-rise font-mono text-[10px] uppercase leading-relaxed tracking-[.16em] text-dim [animation-delay:.55s] md:text-right"><span class="mr-2 inline-block h-1.5 w-1.5 animate-blink rounded-full bg-ice align-middle"></span>Open to UAV integration<br/>&amp; R&amp;D roles</p>
     </div>
   </div>
 
-  <!-- stack strip -->
-  <div class="relative border-y border-white/[.07] bg-surface py-6">
+  <div class="relative border-y border-white/10 py-5">
     <div class="wrap flex items-center gap-8">
       <span class="hidden shrink-0 font-mono text-[10px] uppercase leading-tight tracking-[.2em] text-dim md:block">Stack I<br/>fly with</span>
       <div class="relative flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]" aria-hidden="true">
-        <div class="marquee-track animate-marquee items-center gap-12 font-display text-[15px] font-semibold uppercase tracking-[.04em] text-white/35">
+        <div class="marquee-track animate-marquee items-center gap-12 font-display text-[14px] font-medium uppercase tracking-[.04em] text-white/35">
           <span>PX4</span><span>ROS 2</span><span>MAVLink</span><span>Pixhawk</span><span>NVIDIA Jetson</span><span>Raspberry Pi</span><span>Intel RealSense</span><span>Gazebo</span><span>RTAB-Map</span><span>Nav2</span><span>ArduPilot</span><span>PyTorch</span>
           <span>PX4</span><span>ROS 2</span><span>MAVLink</span><span>Pixhawk</span><span>NVIDIA Jetson</span><span>Raspberry Pi</span><span>Intel RealSense</span><span>Gazebo</span><span>RTAB-Map</span><span>Nav2</span><span>ArduPilot</span><span>PyTorch</span>
         </div>
@@ -122,95 +101,51 @@
   </div>
 </section>
 
-<!-- ============ ABOUT / BENTO ============ -->
+<!-- ============ ABOUT ============ -->
 <section id="about" class="py-24 lg:py-32">
   <div class="wrap">
-    <div class="text-center">
-      <span class="eyebrow reveal">Who I am</span>
-      <h2 class="h-sec reveal d1 mt-6">Built on the bench.<br/><span class="ghost">Proven in the air.</span></h2>
-    </div>
-    <div class="mt-14 grid gap-4 lg:grid-cols-[1fr_1.35fr_1fr]">
-      <div class="grid gap-4">
-        <div class="card reveal p-7">
-          <div class="font-display text-5xl font-bold">16<span class="text-ice">+</span></div>
-          <p class="mt-6 text-sm leading-relaxed text-dim">Systems built — drones, ground robots, SLAM rigs and AI tools, all on GitHub.</p>
-        </div>
-        <div class="card reveal d1 p-7">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#a8c7ff" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v5M12 18v5M1 12h5M18 12h5"/></svg>
-          <h3 class="mt-6 font-display text-sm font-bold uppercase tracking-wide">My mission</h3>
-          <p class="mt-2 text-sm leading-relaxed text-dim">Take PX4 / ROS&nbsp;2 pipelines from simulation onto real airframes — with staged bring-up, telemetry, failsafes and flight-log evidence.</p>
-        </div>
+    <p class="sec-label reveal"><span>01</span> About</p>
+    <div class="mt-12 grid gap-14 lg:grid-cols-12">
+      <div class="reveal lg:col-span-7">
+        <p class="text-[clamp(1.3rem,2.3vw,1.95rem)] font-semibold leading-[1.32] tracking-[-.015em]">
+          I'm a final-year B.Tech student in AI &amp; Robotics. <span class="text-dim">I bring flight software out of simulation and onto real airframes —</span> <span class="text-ice">Pixhawk, Raspberry Pi and Jetson companions, MAVROS offboard control, staged bring-up and failsafes</span> <span class="text-dim">— and I test like an integrator: fault injection, flight-log analysis, written root causes.</span>
+        </p>
+        <p class="mt-8 max-w-xl leading-relaxed text-dim">Recognised by <span class="font-semibold text-fg">Larsen &amp; Toubro</span> with an internship offer after placing 1st at their sponsored Makeathon, and co-author of a 3rd-place paper at the DravidianLangTech 2026 workshop (ACL Anthology).</p>
       </div>
-      <!-- radar card -->
-      <div class="card reveal d1 relative flex min-h-[420px] flex-col justify-between overflow-hidden p-7">
-        <div class="rings pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full"></div>
-        <div class="radar pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 animate-sweep rounded-full [mask-image:radial-gradient(circle,#000_60%,transparent_70%)]"></div>
-        <div class="relative flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em] text-dim"><span>Currently</span><span class="flex items-center gap-2 text-ice"><i class="block h-1.5 w-1.5 animate-blink rounded-full bg-ice"></i>Live</span></div>
-        <div class="relative my-10 text-center">
-          <div class="mx-auto grid h-20 w-20 place-items-center rounded-full border border-ice/40 bg-ice/10">
-            <svg width="40" height="22" viewBox="0 0 26 14" fill="none"><rect x="3" y="2" width="20" height="6.5" rx="1.5" stroke="#a8c7ff" stroke-width="1.3"/><circle cx="7.5" cy="10.5" r="2.5" stroke="#eef1f3" stroke-width="1.3"/><circle cx="18.5" cy="10.5" r="2.5" stroke="#eef1f3" stroke-width="1.3"/></svg>
-          </div>
-          <h3 class="mt-6 font-display text-xl font-bold uppercase leading-tight">Robotics &amp; Drone<br/>Technology Intern</h3>
-          <p class="mt-2 font-mono text-[11px] uppercase tracking-[.16em] text-ice">IIT Tirupati · Jun – Dec 2026</p>
-        </div>
-        <p class="relative text-center text-sm leading-relaxed text-dim">Autonomous LiDAR terrain mapping with PX4 SITL + ROS&nbsp;2, now flying waypoints on a real drone — the maps feed path-finding for a UGV.</p>
-      </div>
-      <div class="grid gap-4">
-        <div class="card reveal d2 p-7">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#a8c7ff" stroke-width="1.5"><path d="M3 7V3h4M21 7V3h-4M3 17v4h4M21 17v4h-4"/><path d="M8 12h8M12 8v8"/></svg>
-          <h3 class="mt-6 font-display text-sm font-bold uppercase tracking-wide">How I work</h3>
-          <p class="mt-2 text-sm leading-relaxed text-dim">Simulation-driven tests (nominal, edge, failure), mock-PX4 and dry-run rigs, fault injection — link loss, drone abort — and written root-cause analysis.</p>
-        </div>
-        <div class="card reveal d3 p-7">
-          <div class="font-display text-5xl font-bold">8.11</div>
-          <p class="mt-6 text-sm leading-relaxed text-dim">CGPA · B.Tech CSE (AI &amp; Robotics), VIT Chennai, 2023–27. 1st at the L&amp;T Makeathon; 3rd at an ACL shared task.</p>
-        </div>
-      </div>
+      <dl class="reveal d1 text-sm lg:col-span-5">
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Now</dt><dd>Robotics &amp; Drone Technology Intern, IIT Tirupati</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Education</dt><dd>B.Tech CSE (AI &amp; Robotics), VIT Chennai · 2023–27</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Flight</dt><dd class="text-dim">PX4, ArduPilot, MAVROS, MAVLink, Pixhawk 6X / 6C, PID tuning</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Compute</dt><dd class="text-dim">Raspberry Pi 5, Jetson Xavier NX, Orin Nano, ESP32</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Autonomy</dt><dd class="text-dim">ROS 2, Nav2, RTAB-Map, slam_toolbox, A*, RealSense, LiDAR</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-t border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">AI / ML</dt><dd class="text-dim">SAC, DDPG, PyTorch, YOLO, SuperGlue</dd></div>
+        <div class="grid grid-cols-[104px_1fr] gap-4 border-y border-white/10 py-4"><dt class="font-mono text-[10px] uppercase tracking-[.14em] text-dim">Code</dt><dd class="text-dim">Python, C++, Linux, Docker, Git</dd></div>
+      </dl>
     </div>
-
-    <!-- skill groups -->
-    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      <div class="card reveal p-6"><div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Flight &amp; avionics</div><div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">PX4</span><span class="tag">ArduPilot</span><span class="tag">MAVROS</span><span class="tag">MAVLink</span><span class="tag">Pixhawk 6X/6C</span><span class="tag">PID</span></div></div>
-      <div class="card reveal d1 p-6"><div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Companion compute</div><div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">Raspberry Pi 5</span><span class="tag">Jetson Xavier NX</span><span class="tag">Orin Nano</span><span class="tag">ESP32</span></div></div>
-      <div class="card reveal d1 p-6"><div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Autonomy</div><div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">ROS 2</span><span class="tag">Nav2</span><span class="tag">RTAB-Map</span><span class="tag">slam_toolbox</span><span class="tag">A*</span><span class="tag">LiDAR</span></div></div>
-      <div class="card reveal d2 p-6"><div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">AI / ML</div><div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">SAC</span><span class="tag">DDPG</span><span class="tag">PyTorch</span><span class="tag">YOLO</span><span class="tag">SuperGlue</span></div></div>
-      <div class="card reveal d3 p-6"><div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Code &amp; infra</div><div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">Python</span><span class="tag">C++</span><span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">Git</span></div></div>
-    </div>
+    <dl class="reveal mt-20 grid grid-cols-2 gap-y-10 md:grid-cols-4">
+      <div class="md:pr-8"><dd class="font-display text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-none">16<span class="text-ice">+</span></dd><dt class="mt-3 font-mono text-[10px] uppercase tracking-[.14em] text-dim">systems built</dt></div>
+      <div class="md:border-l md:border-white/10 md:px-8"><dd class="font-display text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-none">8.11</dd><dt class="mt-3 font-mono text-[10px] uppercase tracking-[.14em] text-dim">CGPA</dt></div>
+      <div class="md:border-l md:border-white/10 md:px-8"><dd class="font-display text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-none">1<sup class="text-lg">st</sup></dd><dt class="mt-3 font-mono text-[10px] uppercase tracking-[.14em] text-dim">L&amp;T Makeathon · 40+ teams</dt></div>
+      <div class="md:border-l md:border-white/10 md:pl-8"><dd class="font-display text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-none">3<sup class="text-lg">rd</sup></dd><dt class="mt-3 font-mono text-[10px] uppercase tracking-[.14em] text-dim">ACL shared task</dt></div>
+    </dl>
   </div>
 </section>
 
-<!-- ============ CAPSTONE SPOTLIGHT ============ -->
-<section id="capstone" class="relative overflow-hidden border-y border-white/[.07] bg-surface py-24 lg:py-32">
-  <div class="stage-grid pointer-events-none absolute inset-0 opacity-60"></div>
-  <div class="wrap relative">
-    <div class="text-center">
-      <span class="eyebrow reveal">Capstone spotlight · BCSE497J</span>
-      <h2 class="h-sec reveal d1 mt-6">A quadrotor that <span class="hl">tilts its thrust</span><br/><span class="ghost">to land on slopes.</span></h2>
-      <p class="lede reveal d2 mx-auto mt-6 text-center">Adaptive Takeoff &amp; Landing Multirotor UAV for Uneven Surfaces — every motor on its own 2-DOF pan-tilt mount, with a ROS&nbsp;2 controller that vectors thrust while <strong>PX4 keeps ownership of motor speed</strong>.</p>
-    </div>
-
-    <!-- spec bento around the airframe -->
-    <div class="mt-16 grid items-stretch gap-4 lg:grid-cols-[1fr_1.6fr_1fr]">
-      <div class="grid gap-4">
-        <div class="card kpi reveal p-7"><div class="v text-[2.4rem]">2.111<small>kg</small></div><div class="k mt-4">All-up weight, measured on a precision scale</div></div>
-        <div class="card kpi reveal d1 p-7"><div class="v text-[2.4rem]">90<span class="text-ice">→</span>6.7<small>ms</small></div><div class="k mt-4">Filter delay @ 50 Hz after root-causing control latency</div></div>
-      </div>
-      <div class="reveal d1 relative flex min-h-[340px] items-center justify-center overflow-hidden rounded-[28px] border border-white/[.06] bg-void">
-        <div class="rings pointer-events-none absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full"></div>
-        <div class="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow rounded-full border border-dashed border-ice/20"></div>
-        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(168,199,255,.12),transparent_65%)]"></div>
-        <img src="assets/img/capstone/drone-cutout-sm.webp" width="760" height="299" alt="The adaptive tilt-motor quadrotor" loading="lazy" class="relative w-[92%] animate-hover drop-shadow-[0_24px_40px_rgba(0,0,0,.85)]"/>
-        <span class="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[.2em] text-dim">PX4 · Pixhawk 6C Mini · Raspberry Pi 5 · ROS 2 Jazzy</span>
-      </div>
-      <div class="grid gap-4">
-        <div class="card kpi reveal d2 p-7"><div class="v text-[2.4rem]">8<small>× MG995</small></div><div class="k mt-4">Servos on 4 pan-tilt mounts · safe range 50°–130° · 40° clamp</div></div>
-        <div class="card kpi reveal d3 p-7"><div class="v text-[2.4rem]">88<small>pages</small></div><div class="k mt-4">Report with a 10-test plan, risk analysis &amp; flight logs</div><a href="assets/docs/Capstone_Report_Adaptive_Tilt_UAV.pdf" target="_blank" rel="noopener" class="link mt-5">Read the report ↗</a></div>
+<!-- ============ CAPSTONE ============ -->
+<section id="capstone" class="border-y border-white/10 bg-surface py-24 lg:py-32">
+  <div class="wrap">
+    <p class="sec-label reveal"><span>02</span> Capstone · BCSE497J</p>
+    <div class="mt-12 grid gap-8 lg:grid-cols-12">
+      <h2 class="h-sec reveal lg:col-span-8">A quadrotor that <span class="text-ice">tilts its thrust</span> to take off and land on slopes.</h2>
+      <div class="reveal d1 flex flex-wrap items-end gap-6 lg:col-span-4 lg:justify-end">
+        <button class="btn btn-ice" data-open="capstone">Full case file →</button>
+        <a class="link" href="assets/docs/Capstone_Report_Adaptive_Tilt_UAV.pdf" target="_blank" rel="noopener">88-page report ↗</a>
       </div>
     </div>
+    <p class="lede reveal mt-6">Adaptive Takeoff &amp; Landing Multirotor UAV for Uneven Surfaces — every motor on its own 2-DOF pan-tilt mount, with a ROS&nbsp;2 controller that vectors thrust while <strong>PX4 keeps ownership of motor speed</strong>.</p>
 
-    <!-- video + status -->
-    <div class="mt-4 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-      <div class="reveal">
+    <div class="mt-14 grid gap-12 lg:grid-cols-12">
+      <div class="reveal lg:col-span-8">
         <div class="vf">
           <span class="rec"><i></i>REC · Tilt test</span>
           <video preload="none" playsinline loop muted poster="assets/img/adaptive_poster.jpg"><source src="assets/video/adaptive_uav.mp4" type="video/mp4"/></video>
@@ -219,46 +154,49 @@
         </div>
         <p class="fig-cap">Hand-tilt test, props off — each motor counter-rotates to keep thrust vertical.</p>
       </div>
-      <div class="card reveal d1 flex flex-col p-7">
-        <div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Status — honest version</div>
-        <ul class="bul mt-5">
-          <li>Bench mechanism + low-latency controller: <b>working</b></li>
-          <li>Indoor IMU-only hover: <b>stable</b>, no visible servo twitch</li>
-          <li>Final hybrid controller: <b>flown</b>; measured results being compiled</li>
+      <dl class="reveal d1 lg:col-span-4">
+        <div class="border-t border-white/10 py-5"><dd class="font-display text-[2.1rem] font-semibold leading-none">2.111<span class="ml-1 font-mono text-[11px] font-medium text-dim">kg</span></dd><dt class="mt-2 font-mono text-[10px] uppercase tracking-[.1em] text-dim">all-up weight, measured</dt></div>
+        <div class="border-t border-white/10 py-5"><dd class="font-display text-[2.1rem] font-semibold leading-none">8</dd><dt class="mt-2 font-mono text-[10px] uppercase tracking-[.1em] text-dim">MG995 servos on 4 pan-tilt mounts</dt></div>
+        <div class="border-t border-white/10 py-5"><dd class="font-display text-[2.1rem] font-semibold leading-none">90<span class="text-ice">→</span>6.7<span class="ml-1 font-mono text-[11px] font-medium text-dim">ms</span></dd><dt class="mt-2 font-mono text-[10px] uppercase tracking-[.1em] text-dim">filter delay at 50 Hz</dt></div>
+        <div class="border-y border-white/10 py-5"><dd class="font-display text-[2.1rem] font-semibold leading-none">88<span class="ml-1 font-mono text-[11px] font-medium text-dim">pages</span></dd><dt class="mt-2 font-mono text-[10px] uppercase tracking-[.1em] text-dim">report · 10-test plan · flight logs</dt></div>
+      </dl>
+    </div>
+
+    <div class="mt-16 grid gap-10 md:grid-cols-3">
+      <div class="reveal border-t border-white/10 pt-5">
+        <p class="font-mono text-[11px] uppercase tracking-[.18em] text-ice">01 · Problem</p>
+        <p class="mt-4 text-[.95rem] leading-relaxed text-dim">A multirotor takes off and lands reliably only on <b class="font-semibold text-fg">flat ground</b>. On a slope the thrust of every fixed motor leans with the frame and the vehicle slides or tips. Articulated landing gear does nothing in flight; tilting rotors aren't normally used to level thrust on the ground.</p>
+      </div>
+      <div class="reveal d1 border-t border-white/10 pt-5">
+        <p class="font-mono text-[11px] uppercase tracking-[.18em] text-ice">02 · Approach</p>
+        <ul class="bul mt-4">
+          <li><b>Four independent 2-DOF pan-tilt mounts</b>, 3D-printed; bench-verified safe range 50°–130°, 40° combined clamp.</li>
+          <li>ROS&nbsp;2 <b>hybrid tilt controller</b>: IMU-direct and Pixhawk-driven sources, 0.30 s stale fallback.</li>
+          <li>Watchdog, altitude lockout, flight-phase state machine, staged bring-up.</li>
         </ul>
-        <div class="mt-6 grid grid-cols-3 gap-2">
-          <button class="shot" data-zoom="assets/img/capstone/hero.jpg" data-cap="Complete airframe on a precision scale — 2.111 kg"><img src="assets/img/capstone/hero.jpg" alt="Airframe on scale" loading="lazy"/></button>
-          <button class="shot" data-zoom="assets/img/capstone/indoor.jpg" data-cap="Indoor hover in the netted arena"><img src="assets/img/capstone/indoor.jpg" alt="Indoor hover" loading="lazy"/></button>
-          <button class="shot" data-zoom="assets/img/capstone/outdoor.jpg" data-cap="Outdoor flight tests"><img src="assets/img/capstone/outdoor.jpg" alt="Outdoor flight tests" loading="lazy"/></button>
-        </div>
-        <div class="mt-auto flex flex-wrap gap-3 pt-7">
-          <button class="btn btn-ice" data-open="capstone">Full case file →</button>
-        </div>
+      </div>
+      <div class="reveal d2 border-t border-white/10 pt-5">
+        <p class="font-mono text-[11px] uppercase tracking-[.18em] text-ice">03 · Results &amp; failures</p>
+        <ul class="bul mt-4">
+          <li><b>Latency fixed</b>: a MAVLink stream cap, a moving average and console logging → <b>90 → 6.7 ms</b>.</li>
+          <li><b>Yaw drift isolated</b> to PX4 and the tilt loop correcting the same axes.</li>
+          <li>A <b>takeoff crash</b> traced to spin-up vibration → angle &amp; gyro deadbands.</li>
+          <li>Status: bench + indoor hover working; final controller flown, measured results being compiled.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- problem / approach / results -->
-    <div class="mt-4 grid gap-4 md:grid-cols-3">
-      <div class="card reveal p-7">
-        <div class="font-display text-3xl font-bold text-white/15">01</div>
-        <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-wide text-ice">Problem</h3>
-        <p class="mt-3 text-sm leading-relaxed text-dim">On a slope every fixed motor leans with the frame, so the vehicle slides or tips. Articulated landing gear does nothing in flight; tilting rotors aren't used to level thrust on the ground.</p>
-      </div>
-      <div class="card reveal d1 p-7">
-        <div class="font-display text-3xl font-bold text-white/15">02</div>
-        <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-wide text-ice">Approach</h3>
-        <ul class="bul mt-3"><li><b>Four 2-DOF pan-tilt mounts</b>, 3D-printed and bench-verified</li><li>ROS&nbsp;2 <b>hybrid tilt controller</b>: IMU-direct + Pixhawk-driven sources, 0.30 s stale fallback</li><li>Watchdog, altitude lockout, flight-phase state machine</li></ul>
-      </div>
-      <div class="card reveal d2 p-7">
-        <div class="font-display text-3xl font-bold text-white/15">03</div>
-        <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-wide text-ice">Results &amp; failures</h3>
-        <ul class="bul mt-3"><li><b>Latency fixed</b>: MAVLink stream cap, moving average, console logging</li><li><b>Yaw drift isolated</b> to two loops correcting the same axes</li><li>Takeoff crash traced to spin-up vibration → deadbands</li></ul>
-      </div>
+    <div class="mt-14 grid grid-cols-3 gap-3 md:gap-4">
+      <button class="shot reveal" data-zoom="assets/img/capstone/hero.jpg" data-cap="Complete airframe on a precision scale — 2.111 kg"><img src="assets/img/capstone/hero.jpg" alt="Airframe on scale, 2.111 kg" loading="lazy"/><span class="cap">2.111 kg airframe</span></button>
+      <button class="shot reveal d1" data-zoom="assets/img/capstone/indoor.jpg" data-cap="Indoor hover in the netted arena"><img src="assets/img/capstone/indoor.jpg" alt="Indoor hover" loading="lazy"/><span class="cap">Indoor hover</span></button>
+      <button class="shot reveal d2" data-zoom="assets/img/capstone/outdoor.jpg" data-cap="Outdoor flight tests"><img src="assets/img/capstone/outdoor.jpg" alt="Outdoor flight tests" loading="lazy"/><span class="cap">Outdoor tests</span></button>
     </div>
-    <div class="mt-4 grid gap-4 md:grid-cols-2" id="capstone-figs">
-      <figure class="card reveal  flex flex-col p-5 md:p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. A — System architecture</span><span class="text-ice">Fig 3.1</span></div>
-        <div class="mt-4 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 316" class="dg w-full" role="img" aria-label="System architecture: PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it."><defs>
+
+    <p class="sec-label reveal mt-20"><span>Diagrams</span> drawn from the capstone report</p>
+    <div class="mt-4 grid gap-x-12 gap-y-14 md:grid-cols-2" id="capstone-figs">
+      <figure class="fig reveal ">
+        <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim"><span class="text-ice">A</span> — System architecture</span><span class="text-dim">Fig 3.1</span></div>
+        <div class="mt-5 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 316" class="dg w-full" role="img" aria-label="System architecture: PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it."><defs>
 <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -277,7 +215,7 @@
 <path d="M454 160C474 160 474 76 488 76" class="l la flow" marker-end="url(#ah)" />
 <path d="M454 184C474 184 474 264 488 264" class="l la flow" marker-end="url(#ah)" /><text x="478" y="176" class="s hi" text-anchor="middle">PWM</text>
 <path d="M406 268V216" class="l" marker-end="url(#ah)" /></svg></div>
-        <svg viewBox="0 0 360 590" class="dg dgm mt-4 w-full md:hidden" role="img" aria-label="System architecture: PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it."><defs>
+        <svg viewBox="0 0 360 590" class="dg dgm mt-5 w-full md:hidden" role="img" aria-label="System architecture: PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it."><defs>
 <marker id="ahm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -296,11 +234,11 @@
 <path d="M120 382C120 420 90 420 90 450" class="l la flow" marker-end="url(#ahm)" />
 <path d="M240 382C240 420 270 420 270 450" class="l la flow" marker-end="url(#ahm)" /><text x="180" y="426" class="s hi" text-anchor="middle">PWM</text>
 <path d="M140 538L110 506" class="l" marker-end="url(#ahm)" /><path d="M220 538L250 506" class="l" marker-end="url(#ahm)" /></svg>
-        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it.</figcaption>
+        <figcaption class="mt-4 max-w-md text-[.82rem] leading-relaxed text-dim">PX4 keeps attitude and motor speed. The Pi only drives the eight servos, in an outer loop around it.</figcaption>
       </figure>
-      <figure class="card reveal d1 flex flex-col p-5 md:p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. B — Hybrid controller</span><span class="text-ice">Fig 4.2</span></div>
-        <div class="mt-4 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 370" class="dg w-full" role="img" aria-label="Hybrid controller: Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old."><defs>
+      <figure class="fig reveal d1">
+        <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim"><span class="text-ice">B</span> — Hybrid controller</span><span class="text-dim">Fig 4.2</span></div>
+        <div class="mt-5 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 370" class="dg w-full" role="img" aria-label="Hybrid controller: Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old."><defs>
 <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -320,7 +258,7 @@
 <path d="M495 218C495 238 370 238 370 252" class="l" marker-end="url(#ah)" />
 <rect x="210" y="320" width="180" height="38" rx="10" class="nh "/><text x="300.0" y="343.0" class="t" text-anchor="middle">8 servos on the PCA9685</text>
 <path d="M300 296V318" class="l la flow" marker-end="url(#ah)" /></svg></div>
-        <svg viewBox="0 0 360 480" class="dg dgm mt-4 w-full md:hidden" role="img" aria-label="Hybrid controller: Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old."><defs>
+        <svg viewBox="0 0 360 480" class="dg dgm mt-5 w-full md:hidden" role="img" aria-label="Hybrid controller: Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old."><defs>
 <marker id="ahm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -344,11 +282,11 @@
 <text x="8" y="420" class="s"><tspan class="bd2">1</tspan>  GROUND · TAKEOFF · LANDING, or</text><text x="25" y="433" class="s">stream stale</text>
 <text x="8" y="452" class="s"><tspan class="bd2">2</tspan>  FLIGHT · armed · stream &lt; 0.30 s</text>
 <text x="8" y="470" class="s"><tspan class="bd2">3</tspan>  above 2.0 m: IMU tilt off</text></svg>
-        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old.</figcaption>
+        <figcaption class="mt-4 max-w-md text-[.82rem] leading-relaxed text-dim">Two sources with a defined handoff; PX4 control is used only while armed and its stream is under 0.30 s old.</figcaption>
       </figure>
-      <figure class="card reveal  flex flex-col p-5 md:p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. C — Latency fix</span><span class="text-ice">Fig 4.1</span></div>
-        <div class="mt-4 hidden overflow-x-auto md:block"><svg viewBox="0 0 560 270" class="dg w-full" role="img" aria-label="Latency fix: EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms."><line x1="56.0" y1="20" x2="56.0" y2="230" class="gr"/><text x="56.0" y="246" class="s" text-anchor="middle">0</text><line x1="177.0" y1="20" x2="177.0" y2="230" class="gr"/><text x="177.0" y="246" class="s" text-anchor="middle">100</text><line x1="298.0" y1="20" x2="298.0" y2="230" class="gr"/><text x="298.0" y="246" class="s" text-anchor="middle">200</text><line x1="419.0" y1="20" x2="419.0" y2="230" class="gr"/><text x="419.0" y="246" class="s" text-anchor="middle">300</text><line x1="540.0" y1="20" x2="540.0" y2="230" class="gr"/><text x="540.0" y="246" class="s" text-anchor="middle">400</text><line x1="56" y1="230.0" x2="540" y2="230.0" class="gr"/><text x="48" y="233.0" class="s" text-anchor="end">0</text><line x1="56" y1="125.0" x2="540" y2="125.0" class="gr"/><text x="48" y="128.0" class="s" text-anchor="end">0.5</text><line x1="56" y1="20.0" x2="540" y2="20.0" class="gr"/><text x="48" y="23.0" class="s" text-anchor="end">1</text>
+      <figure class="fig reveal ">
+        <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim"><span class="text-ice">C</span> — Latency fix</span><span class="text-dim">Fig 4.1</span></div>
+        <div class="mt-5 hidden overflow-x-auto md:block"><svg viewBox="0 0 560 270" class="dg w-full" role="img" aria-label="Latency fix: EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms."><line x1="56.0" y1="20" x2="56.0" y2="230" class="gr"/><text x="56.0" y="246" class="s" text-anchor="middle">0</text><line x1="177.0" y1="20" x2="177.0" y2="230" class="gr"/><text x="177.0" y="246" class="s" text-anchor="middle">100</text><line x1="298.0" y1="20" x2="298.0" y2="230" class="gr"/><text x="298.0" y="246" class="s" text-anchor="middle">200</text><line x1="419.0" y1="20" x2="419.0" y2="230" class="gr"/><text x="419.0" y="246" class="s" text-anchor="middle">300</text><line x1="540.0" y1="20" x2="540.0" y2="230" class="gr"/><text x="540.0" y="246" class="s" text-anchor="middle">400</text><line x1="56" y1="230.0" x2="540" y2="230.0" class="gr"/><text x="48" y="233.0" class="s" text-anchor="end">0</text><line x1="56" y1="125.0" x2="540" y2="125.0" class="gr"/><text x="48" y="128.0" class="s" text-anchor="end">0.5</text><line x1="56" y1="20.0" x2="540" y2="20.0" class="gr"/><text x="48" y="23.0" class="s" text-anchor="end">1</text>
 <line x1="56" y1="41.0" x2="540" y2="41.0" stroke="#a8c7ff" stroke-opacity=".35" stroke-dasharray="2 4"/><text x="540" y="54.0" class="s hi" text-anchor="end">90 %</text>
 <path d="M56.0 230.0H128.6V20.0H540.0" class="l" style="stroke:#8794a8;opacity:.6"/>
 <path d="M56.0 230.0H128.6V209.0H152.8V188.0H177.0V167.0H201.2V146.0H225.4V125.0H249.6V104.0H273.8V83.0H298.0V62.0H322.2V41.0H346.4V20.0H370.6V20.0H394.8V20.0H419.0V20.0H443.2V20.0H467.4V20.0H491.6V20.0H515.8V20.0H540.0V20.0H564.2V20.0H588.4V20.0H540.0" class="l" style="stroke:#7f9cc7;stroke-dasharray:6 4;stroke-width:1.8"/>
@@ -357,7 +295,7 @@
 <g transform="translate(331.9 133.4)"><circle cx="-10" cy="-4" r="4" fill="#7f9cc7"/><text class="t" style="fill:#7f9cc7">10-sample average</text><text y="14" class="s">avg delay 90 ms</text></g>
 <g transform="translate(269.0 194.3)"><circle cx="-10" cy="-4" r="4" fill="#a8c7ff"/><text class="t" style="fill:#a8c7ff">EMA · α = 0.75</text><text y="14" class="s">avg delay 6.7 ms</text><text y="26" class="s">90 % in 2 samples</text></g>
 <text x="120.6" y="34.0" class="s" text-anchor="end">input step</text></svg></div>
-        <svg viewBox="0 0 360 356" class="dg dgm mt-4 w-full md:hidden" role="img" aria-label="Latency fix: EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms."><defs>
+        <svg viewBox="0 0 360 356" class="dg dgm mt-5 w-full md:hidden" role="img" aria-label="Latency fix: EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms."><defs>
 <marker id="ahm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs><line x1="40.0" y1="14" x2="40.0" y2="190" class="gr"/><text x="40.0" y="205" class="s" text-anchor="middle">0</text><line x1="117.0" y1="14" x2="117.0" y2="190" class="gr"/><text x="117.0" y="205" class="s" text-anchor="middle">100</text><line x1="194.0" y1="14" x2="194.0" y2="190" class="gr"/><text x="194.0" y="205" class="s" text-anchor="middle">200</text><line x1="271.0" y1="14" x2="271.0" y2="190" class="gr"/><text x="271.0" y="205" class="s" text-anchor="middle">300</text><line x1="348.0" y1="14" x2="348.0" y2="190" class="gr"/><text x="348.0" y="205" class="s" text-anchor="middle">400</text><line x1="40" y1="190.0" x2="348" y2="190.0" class="gr"/><text x="34" y="193.0" class="s" text-anchor="end">0</text><line x1="40" y1="102.0" x2="348" y2="102.0" class="gr"/><text x="34" y="105.0" class="s" text-anchor="end">0.5</text><line x1="40" y1="14.0" x2="348" y2="14.0" class="gr"/><text x="34" y="17.0" class="s" text-anchor="end">1</text>
@@ -369,11 +307,11 @@
 <line x1="8" y1="252" x2="30" y2="252" class="l la" style="stroke-width:2.6"/><text x="38" y="256" class="t">EMA · α = 0.75</text><text x="38" y="271" class="s">avg delay 6.7 ms · 90 % in 2 samples</text>
 <line x1="8" y1="296" x2="30" y2="296" class="l" style="stroke:#7f9cc7;stroke-dasharray:6 4;stroke-width:1.8"/><text x="38" y="300" class="t" style="fill:#7f9cc7">10-sample average</text><text x="38" y="315" class="s">avg delay 90 ms</text>
 <line x1="8" y1="340" x2="30" y2="340" class="l" style="stroke:#8794a8;opacity:.7"/><text x="38" y="344" class="t" style="fill:#8794a8">input step</text></svg>
-        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms.</figcaption>
+        <figcaption class="mt-4 max-w-md text-[.82rem] leading-relaxed text-dim">EMA filter vs 10-sample moving average at 50 Hz — average delay cut from 90 ms to 6.7 ms.</figcaption>
       </figure>
-      <figure class="card reveal d1 flex flex-col p-5 md:p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim">Fig. D — Flight phases</span><span class="text-ice">Fig 4.3</span></div>
-        <div class="mt-4 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 270" class="dg w-full" role="img" aria-label="Flight phases: Throttle-driven state machine with an any-state failsafe that a watchdog trip latches."><defs>
+      <figure class="fig reveal d1">
+        <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[.18em]"><span class="text-dim"><span class="text-ice">D</span> — Flight phases</span><span class="text-dim">Fig 4.3</span></div>
+        <div class="mt-5 hidden overflow-x-auto md:block"><svg viewBox="0 0 600 270" class="dg w-full" role="img" aria-label="Flight phases: Throttle-driven state machine with an any-state failsafe that a watchdog trip latches."><defs>
 <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -389,7 +327,7 @@
 <g stroke="#ff8d8d" stroke-opacity=".55" stroke-dasharray="3 4" fill="none"><path d="M55.0 122V180M218.0 122V180M382.0 122V180M545.0 122V180"/></g>
 <rect x="10" y="180" width="580" height="44" rx="22" class="fs"/><text x="300" y="206" class="t" text-anchor="middle" style="fill:#ff8d8d">FAILSAFE · reachable from any state · a watchdog trip latches it</text>
 <text x="10" y="252" class="s">thr = throttle pulse width (µs)  ·  RC signal lost &gt; 0.5 s → back to GROUND</text></svg></div>
-        <svg viewBox="0 0 360 540" class="dg dgm mt-4 w-full md:hidden" role="img" aria-label="Flight phases: Throttle-driven state machine with an any-state failsafe that a watchdog trip latches."><defs>
+        <svg viewBox="0 0 360 540" class="dg dgm mt-5 w-full md:hidden" role="img" aria-label="Flight phases: Throttle-driven state machine with an any-state failsafe that a watchdog trip latches."><defs>
 <marker id="ahm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#a8c7ff"/></marker>
 <marker id="ahd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#ff8d8d"/></marker>
 </defs>
@@ -407,7 +345,7 @@
 <rect x="14" y="430" width="332" height="58" rx="29" class="fs"/><text x="180" y="455" class="t" text-anchor="middle" style="fill:#ff8d8d">FAILSAFE · any state</text><text x="180" y="472" class="s" text-anchor="middle" style="fill:#ff8d8d">a watchdog trip latches it</text>
 <path d="M54 362V430" class="l" style="stroke:#ff8d8d;opacity:.5" stroke-dasharray="3 4"/>
 <text x="14" y="512" class="s">thr = throttle pulse width (µs)</text><text x="14" y="526" class="s">RC signal lost &gt; 0.5 s → back to GROUND</text></svg>
-        <figcaption class="mt-3 text-[.82rem] leading-relaxed text-dim">Throttle-driven state machine with an any-state failsafe that a watchdog trip latches.</figcaption>
+        <figcaption class="mt-4 max-w-md text-[.82rem] leading-relaxed text-dim">Throttle-driven state machine with an any-state failsafe that a watchdog trip latches.</figcaption>
       </figure>
     </div>
   </div>
@@ -417,19 +355,20 @@
 <section id="experience" class="py-24 lg:py-32">
   <div class="wrap">
     <div class="flex flex-wrap items-end justify-between gap-6">
-      <div><span class="eyebrow reveal">Experience &amp; education</span><h2 class="h-sec reveal d1 mt-6">Flight <span class="hl">log</span></h2></div>
-      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="btn btn-line reveal d2">Download résumé ↓</a>
+      <div><p class="sec-label reveal"><span>03</span> Experience &amp; education</p><h2 class="h-sec reveal d1 mt-10">Flight log</h2></div>
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="link reveal d2">Download résumé ↓</a>
     </div>
-    <div class="mt-14 grid gap-4">
-      <article class="card reveal grid gap-6 p-7 md:grid-cols-[220px_1fr] md:p-9">
-        <div>
-          <div class="font-mono text-[11px] uppercase tracking-[.16em] text-dim">Jun 2026 — Dec 2026</div>
-          <span class="pill pill-hw mt-4">● Ongoing</span>
-        </div>
-        <div>
-          <h3 class="font-display text-xl font-bold uppercase leading-tight">Robotics &amp; Drone Technology Intern</h3>
-          <div class="mt-2 font-mono text-[11px] uppercase tracking-[.12em] text-ice">IIT Tirupati · <a class="underline underline-offset-4 hover:text-fg" href="https://github.com/karthikeyan-manimaran/Aerial-Terrain-Mapper" target="_blank" rel="noopener">Aerial-Terrain-Mapper ↗</a></div>
-          <ul class="bul mt-6 max-w-3xl">
+
+    <article class="reveal mt-14 grid gap-8 border-t border-white/10 pt-10 lg:grid-cols-12">
+      <div class="lg:col-span-3">
+        <p class="font-mono text-[11px] uppercase tracking-[.16em] text-dim">Jun 2026 — Dec 2026</p>
+        <p class="st st-hw mt-3">Ongoing</p>
+      </div>
+      <div class="lg:col-span-9">
+        <h3 class="font-display text-[1.5rem] font-semibold leading-tight tracking-[-.02em]">Robotics &amp; Drone Technology Intern</h3>
+        <p class="mt-2 font-mono text-[12px] uppercase tracking-[.1em] text-ice">IIT Tirupati · <a class="underline underline-offset-4 hover:text-fg" href="https://github.com/karthikeyan-manimaran/Aerial-Terrain-Mapper" target="_blank" rel="noopener">Aerial-Terrain-Mapper ↗</a></p>
+        <div class="mt-8 grid gap-10 xl:grid-cols-[1.1fr_1fr]">
+          <ul class="bul max-w-2xl">
             <li>Built a <b>PX4 SITL + ROS 2 + Gazebo</b> pipeline for autonomous LiDAR terrain mapping (single-beam sensor modelled as a 64-beam 3D LiDAR); simulation published on GitHub.</li>
             <li>Wrote a <b>waypoint-mission state machine</b> that flies survey grids, stabilises and captures timestamped scans, plus a grid-merge stitching pipeline for gap-free 3D terrain.</li>
             <li><b>Sim → hardware:</b> autonomous point-to-point waypoint flight works on the real drone; capture + stitching integration is next.</li>
@@ -437,69 +376,77 @@
             <li>Fixed integration faults (ROS 2 QoS mismatches, NumPy/OpenCV conflicts, memory growth); built an <b>orthomosaic stitcher</b> for 121 drone captures.</li>
             <li>Started hardware bring-up of a new UAV: <b>Jetson Orin Nano + Pixhawk 6X</b> on an EFT airframe.</li>
           </ul>
-          <button class="link mt-6" data-open="terrain">Project details →</button>
+          <figure>
+            <button class="block w-full cursor-zoom-in" data-zoom="assets/img/experience/hexacopter.webp" data-cap="New hexacopter airframe — hardware bring-up"><img src="assets/img/experience/hexacopter.webp" width="1240" height="687" alt="Hexacopter airframe with X6 Plus motors and a Pixhawk flight controller, used for the new UAV bring-up" loading="lazy" class="w-full drop-shadow-[0_24px_40px_rgba(0,0,0,.7)]"/></button>
+            <figcaption class="fig-cap">The new UAV airframe — hexacopter, GPS mast and flight controller on the deck; hardware bring-up in progress.</figcaption>
+          </figure>
         </div>
-      </article>
-      <div class="grid gap-4 md:grid-cols-2">
-        <article class="card reveal p-7 md:p-9">
-          <div class="font-mono text-[11px] uppercase tracking-[.16em] text-dim">Recognition</div>
-          <h3 class="mt-4 font-display text-lg font-bold uppercase leading-tight">Internship offer — Larsen &amp; Toubro</h3>
-          <p class="mt-3 text-sm leading-relaxed text-dim">Earned by winning <b class="text-fg">1st place among 40+ teams</b> at the L&amp;T × Innova Makeathon with Code Optimizer AI.</p>
-        </article>
-        <article class="card reveal d1 p-7 md:p-9">
-          <div class="font-mono text-[11px] uppercase tracking-[.16em] text-dim">2023 — 2027</div>
-          <h3 class="mt-4 font-display text-lg font-bold uppercase leading-tight">B.Tech CSE (AI &amp; Robotics)</h3>
-          <p class="mt-3 text-sm leading-relaxed text-dim">Vellore Institute of Technology, Chennai · <b class="text-fg">CGPA 8.11 / 10</b>. Capstone: adaptive tilt-motor UAV · UAV–UGV path planning · DravidianLangTech 2026 paper.</p>
-        </article>
+        <p class="mt-12 font-mono text-[11px] uppercase tracking-[.16em] text-ice">Pipeline output <span class="text-dim">— from my own runs</span></p>
+        <div class="mt-4 grid grid-cols-3 gap-3 md:gap-4">
+          <button class="shot !aspect-square" data-zoom="assets/img/projects/terrain_ortho.jpg" data-cap="Orthomosaic stitched from 121 camera captures"><img src="assets/img/projects/terrain_ortho.jpg" alt="Orthomosaic of the simulated mountain terrain" loading="lazy"/><span class="cap">Orthomosaic · 121 captures</span></button>
+          <button class="shot !aspect-square" data-zoom="assets/img/projects/terrain_captures.jpg" data-cap="The 11×11 capture grid"><img src="assets/img/projects/terrain_captures.jpg" alt="Grid of 121 captured camera frames" loading="lazy"/><span class="cap">11×11 capture grid</span></button>
+          <button class="shot !aspect-square" data-zoom="assets/img/projects/terrain_lidar.jpg" data-cap="Merged LiDAR terrain cloud (vertical scale ×7)"><img src="assets/img/projects/terrain_lidar_sq.jpg" alt="Merged LiDAR point cloud of the terrain" loading="lazy"/><span class="cap">LiDAR cloud · ×7 vertical</span></button>
+        </div>
+        <button class="link mt-8" data-open="terrain">Project details →</button>
       </div>
-    </div>
+    </article>
+
+    <article class="reveal grid gap-6 border-t border-white/10 py-9 lg:grid-cols-12">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-dim lg:col-span-3">Recognition</p>
+      <div class="lg:col-span-9">
+        <h3 class="font-display text-[1.25rem] font-semibold leading-tight tracking-[-.015em]">Internship offer — Larsen &amp; Toubro</h3>
+        <p class="mt-2 font-mono text-[12px] uppercase tracking-[.1em] text-ice">Earned by winning 1st place · L&amp;T × Innova Makeathon · 40+ teams</p>
+        <p class="mt-3 max-w-3xl text-[.95rem] leading-relaxed text-dim">Won with <b class="font-semibold text-fg">Code Optimizer AI</b>, an AST-based multi-language code optimization platform.</p>
+      </div>
+    </article>
+    <article class="reveal grid gap-6 border-y border-white/10 py-9 lg:grid-cols-12">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-dim lg:col-span-3">2023 — 2027</p>
+      <div class="lg:col-span-9">
+        <h3 class="font-display text-[1.25rem] font-semibold leading-tight tracking-[-.015em]">B.Tech CSE (AI &amp; Robotics)</h3>
+        <p class="mt-2 font-mono text-[12px] uppercase tracking-[.1em] text-ice">Vellore Institute of Technology, Chennai · CGPA 8.11 / 10</p>
+        <p class="mt-3 max-w-3xl text-[.95rem] leading-relaxed text-dim">Capstone: adaptive tilt-motor UAV · air–ground UAV–UGV path planning · DravidianLangTech 2026 paper.</p>
+      </div>
+    </article>
   </div>
 </section>
 
 <!-- ============ DEMO REEL ============ -->
-<section id="demos" class="border-y border-white/[.07] bg-surface py-24 lg:py-32">
+<section id="demos" class="border-y border-white/10 bg-surface py-24 lg:py-32">
   <div class="wrap">
-    <div class="text-center">
-      <span class="eyebrow reveal">Demo reel</span>
-      <h2 class="h-sec reveal d1 mt-6">Real flight. <span class="ghost">Real data.</span></h2>
-      <p class="lede reveal d2 mx-auto mt-5 text-center">Captured on running systems — open any case file for architecture, numbers and gallery.</p>
+    <p class="sec-label reveal"><span>04</span> Demo reel</p>
+    <div class="mt-10 flex flex-wrap items-end justify-between gap-6">
+      <h2 class="h-sec reveal">Real flight. <span class="ghost">Real data.</span></h2>
+      <p class="lede reveal d1 max-w-md">Captured on running systems. Open any case file for the architecture, numbers and gallery.</p>
     </div>
-    <div class="mt-14 grid gap-4 md:grid-cols-3">
-      <article class="card reveal flex flex-col p-2">
+    <div class="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-3">
+      <article class="reveal">
         <div class="vf">
           <span class="rec"><i></i>REC · SLAM</span>
           <video preload="none" playsinline loop muted poster="assets/img/slam/slam_terminal.jpg"><source src="assets/video/slam_demo.webm" type="video/webm"/></video><div class="bar"></div>
           <button class="ov" aria-label="Play SLAM demo"><span class="ring"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px"><polygon points="5,3 19,12 5,21"/></svg></span><span class="lbl">SLAM on Jetson</span></button>
         </div>
-        <div class="flex flex-1 flex-col p-5">
-          <h3 class="font-display text-base font-bold uppercase">GPS-denied 3D SLAM</h3>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-dim">RealSense D435i + RTAB-Map + MAVROS on a Jetson Nano. ~6 FPS loop closure, &lt;5 cm drift over 20 m.</p>
-          <button class="link mt-5 self-start" data-open="slam">Case file →</button>
-        </div>
+        <h3 class="mt-5 font-display text-[1.05rem] font-semibold tracking-[-.01em]">GPS-denied 3D SLAM</h3>
+        <p class="mt-2 text-sm leading-relaxed text-dim">RealSense D435i + RTAB-Map + MAVROS on a Jetson Nano. ~6 FPS loop closure, &lt;5 cm drift over 20 m.</p>
+        <button class="link mt-4" data-open="slam">Case file →</button>
       </article>
-      <article class="card reveal d1 flex flex-col p-2">
+      <article class="reveal d1">
         <div class="vf">
           <span class="rec"><i></i>REC · Flight</span>
           <video preload="none" playsinline loop muted poster="assets/img/uav/drone_flight.jpg"><source src="assets/video/demo2.mp4" type="video/mp4"/></video><div class="bar"></div>
           <button class="ov" aria-label="Play flight demo"><span class="ring"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px"><polygon points="5,3 19,12 5,21"/></svg></span><span class="lbl">Flight demo</span></button>
         </div>
-        <div class="flex flex-1 flex-col p-5">
-          <h3 class="font-display text-base font-bold uppercase">UAV over a UGV target</h3>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-dim">Holybro X650 hovering and approaching the RHINO UGV — PX4 + MAVROS + ROS&nbsp;2 on real hardware.</p>
-          <button class="link mt-5 self-start" data-open="uavhw">Case file →</button>
-        </div>
+        <h3 class="mt-5 font-display text-[1.05rem] font-semibold tracking-[-.01em]">UAV over a UGV target</h3>
+        <p class="mt-2 text-sm leading-relaxed text-dim">Holybro X650 hovering and approaching the RHINO UGV in the VIT indoor arena — PX4 + MAVROS + ROS&nbsp;2 on real hardware.</p>
+        <button class="link mt-4" data-open="uavhw">Case file →</button>
       </article>
-      <article class="card reveal d2 flex flex-col p-2">
-        <button class="vf group" data-open="uavugv" aria-label="Open the UAV–UGV case file">
+      <article class="reveal d2">
+        <button class="vf group block w-full" data-open="uavugv" aria-label="Open the UAV–UGV case file">
           <span class="rec"><i></i>REC · First outdoor run</span>
-          <img src="assets/img/ugv/flight.jpg" alt="Drone flying over the UGV outdoors" loading="lazy" class="transition duration-700 [object-position:50%_12%] group-hover:scale-105"/>
-          <span class="absolute bottom-3 right-3 grid h-10 w-10 place-items-center rounded-full bg-ice text-void transition group-hover:rotate-[-45deg]">→</span>
+          <img src="assets/img/ugv/flight.jpg" alt="Drone flying over the UGV outdoors" loading="lazy" class="transition duration-700 [object-position:50%_12%] group-hover:scale-[1.04]"/>
         </button>
-        <div class="flex flex-1 flex-col p-5">
-          <h3 class="font-display text-base font-bold uppercase">Air–ground UAV–UGV team</h3>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-dim">Drone scans, UGV plans: heightmap → PCA → A*. 0.71 s live cycle, aborts verified in simulation, first outdoor run done.</p>
-          <button class="link mt-5 self-start" data-open="uavugv">Case file →</button>
-        </div>
+        <h3 class="mt-5 font-display text-[1.05rem] font-semibold tracking-[-.01em]">Air–ground UAV–UGV team</h3>
+        <p class="mt-2 text-sm leading-relaxed text-dim">Drone scans, UGV plans: heightmap → PCA → A*. 0.71 s live cycle, aborts verified in simulation, first outdoor run done.</p>
+        <button class="link mt-4" data-open="uavugv">Case file →</button>
       </article>
     </div>
   </div>
@@ -508,80 +455,74 @@
 <!-- ============ PROJECTS ============ -->
 <section id="projects" class="py-24 lg:py-32">
   <div class="wrap">
-    <div class="flex flex-wrap items-end justify-between gap-6">
-      <div><span class="eyebrow reveal">Project archive</span><h2 class="h-sec reveal d1 mt-6">More builds —<br/><span class="ghost">drones, robots, AI.</span></h2></div>
-      <a href="projects.html" class="btn btn-ice reveal d2">All 16 projects →</a>
+    <p class="sec-label reveal"><span>05</span> Project archive</p>
+    <div class="mt-10 flex flex-wrap items-end justify-between gap-6">
+      <h2 class="h-sec reveal">More builds — <span class="ghost">drones, robots, AI.</span></h2>
+      <a href="projects.html" class="link reveal d1">All 16 projects →</a>
     </div>
-    <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-grid="terrain,swarm,rl,mine,monovo,codeopt"></div>
+    <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2" data-grid="terrain,swarm,rl,mine,monovo,codeopt"></div>
   </div>
 </section>
 
 <!-- ============ RECOGNITION ============ -->
-<section id="recognition" class="border-t border-white/[.07] py-24 lg:py-32">
+<section id="recognition" class="border-t border-white/10 py-24 lg:py-32">
   <div class="wrap">
-    <div class="text-center"><span class="eyebrow reveal">Recognition</span><h2 class="h-sec reveal d1 mt-6">Paper, award <span class="ghost">&amp; certification</span></h2></div>
-    <div class="mt-14 grid gap-4 lg:grid-cols-2">
-      <article class="card reveal p-8">
-        <span class="pill pill-win">3rd place · DravidianLangTech 2026</span>
-        <h3 class="mt-6 font-display text-lg font-bold uppercase leading-snug">Grapheme-level normalization for abusive Tamil text classification</h3>
-        <p class="mt-4 text-sm leading-relaxed text-dim">HNK@DravidianLangTech 2026 (ACL Anthology). Compared IndicBERT, MuRIL and Tamil-BERT, then added <b class="text-fg">grapheme-aware normalization</b> to preserve Tamil Unicode structure — TamilBERT reached <b class="text-fg">0.8105 test accuracy</b>.</p>
-        <a href="https://aclanthology.org/2026.dravidianlangtech-1.38.pdf" target="_blank" rel="noopener" class="link mt-6">Read the paper ↗</a>
+    <p class="sec-label reveal"><span>06</span> Recognition</p>
+    <h2 class="h-sec reveal d1 mt-10">Paper, award <span class="ghost">&amp; certification</span></h2>
+    <div class="mt-14 border-b border-white/10">
+      <article class="reveal grid gap-4 border-t border-white/10 py-8 lg:grid-cols-12">
+        <p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice lg:col-span-3">3rd place<br/><span class="text-dim">DravidianLangTech 2026</span></p>
+        <div class="lg:col-span-9">
+          <h3 class="font-display text-[1.2rem] font-semibold leading-snug tracking-[-.015em]">Grapheme-level normalization for abusive Tamil text classification</h3>
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed text-dim">HNK@DravidianLangTech 2026 (ACL Anthology). Compared IndicBERT, MuRIL and Tamil-BERT, then added <b class="font-medium text-fg">grapheme-aware normalization</b> to preserve Tamil Unicode structure — TamilBERT reached <b class="font-medium text-fg">0.8105 test accuracy</b>.</p>
+          <a href="https://aclanthology.org/2026.dravidianlangtech-1.38.pdf" target="_blank" rel="noopener" class="link mt-5">Read the paper ↗</a>
+        </div>
       </article>
-      <article class="card reveal d1 p-8">
-        <span class="pill pill-hw">1st place · 40+ teams</span>
-        <h3 class="mt-6 font-display text-lg font-bold uppercase leading-snug">Code Optimizer AI — won an L&amp;T internship offer</h3>
-        <p class="mt-4 text-sm leading-relaxed text-dim">AST parsing + ML to surface inefficiencies, anti-patterns and bugs across JS, TS, Python, Java and C++, with real-time WebSocket suggestions and a side-by-side optimized diff.</p>
-        <div class="mt-6 flex flex-wrap gap-6"><button class="link" data-open="codeopt">Case file →</button><a href="https://github.com/karthikeyan-manimaran/code-optimizer-AI" target="_blank" rel="noopener" class="link">GitHub ↗</a></div>
+      <article class="reveal grid gap-4 border-t border-white/10 py-8 lg:grid-cols-12">
+        <p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice lg:col-span-3">1st place · 40+ teams<br/><span class="text-dim">L&amp;T × Innova Makeathon</span></p>
+        <div class="lg:col-span-9">
+          <h3 class="font-display text-[1.2rem] font-semibold leading-snug tracking-[-.015em]">Code Optimizer AI — won an L&amp;T internship offer</h3>
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed text-dim">AST parsing + ML to surface inefficiencies, anti-patterns and bugs across JS, TS, Python, Java and C++, with real-time WebSocket suggestions and a side-by-side optimized diff.</p>
+          <div class="mt-5 flex flex-wrap gap-6"><button class="link" data-open="codeopt">Case file →</button><a href="https://github.com/karthikeyan-manimaran/code-optimizer-AI" target="_blank" rel="noopener" class="link">GitHub ↗</a></div>
+        </div>
+      </article>
+      <article class="reveal grid gap-4 border-t border-white/10 py-8 lg:grid-cols-12">
+        <p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice lg:col-span-3">Certification<br/><span class="text-dim">Oracle · 90 % exam score</span></p>
+        <div class="lg:col-span-9">
+          <h3 class="font-display text-[1.2rem] font-semibold leading-snug tracking-[-.015em]">OCI Generative AI Professional</h3>
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed text-dim">LLM fundamentals, OCI Generative AI, embeddings, vector search, prompt engineering and RAG chatbot design. Valid to Jul 2027 · ID 321158504OCI25GAIOCP · Exam 1Z0-1127-25.</p>
+        </div>
       </article>
     </div>
-    <article class="card reveal mt-4 grid gap-6 p-8 md:grid-cols-[1fr_auto] md:items-center">
-      <div>
-        <div class="font-mono text-[10px] uppercase tracking-[.18em] text-ice">Certification</div>
-        <h3 class="mt-3 font-display text-base font-bold uppercase">Oracle Cloud Infrastructure — Generative AI Professional</h3>
-        <p class="mt-2 text-sm leading-relaxed text-dim">LLM fundamentals, OCI Generative AI, embeddings, vector search, prompt engineering and RAG chatbot design.</p>
-        <div class="mt-4 flex flex-wrap gap-1.5"><span class="tag">Valid → Jul 2027</span><span class="tag">ID 321158504OCI25GAIOCP</span><span class="tag">Exam 1Z0-1127-25</span></div>
-      </div>
-      <div class="text-center md:text-right"><div class="font-display text-5xl font-bold text-ice">90%</div><div class="font-mono text-[10px] uppercase tracking-[.16em] text-dim">Exam score</div></div>
-    </article>
   </div>
 </section>
 
 <!-- ============ CONTACT ============ -->
 <section id="contact" class="relative overflow-hidden py-28 lg:py-40">
-  <img src="assets/img/ugv/flight.jpg" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 h-full w-full object-cover opacity-30 grayscale"/>
-  <div class="absolute inset-0 bg-gradient-to-b from-void via-void/60 to-void"></div>
-  <div class="wrap relative text-center">
-    <span class="eyebrow reveal">Establish link</span>
-    <h2 class="reveal d1 mt-8 font-display text-[clamp(2.4rem,8vw,7rem)] font-extrabold uppercase leading-[.92] tracking-[-.035em]">Let's build<br/><span class="text-ice">what flies.</span></h2>
-    <p class="lede reveal d2 mx-auto mt-7 text-center">Open to UAV integration, R&amp;D and air–ground autonomy roles, research collaborations and hard problems in multi-vehicle systems.</p>
-    <a href="mailto:karthikeyanm19112005@gmail.com" class="reveal d3 mx-auto mt-10 flex w-full max-w-xl items-center justify-between gap-3 rounded-full border border-white/15 bg-void/70 p-2 pl-6 backdrop-blur transition hover:border-ice">
-      <span class="truncate text-left text-sm text-fg sm:text-base">karthikeyanm19112005@gmail.com</span>
-      <span class="btn btn-ice shrink-0 !py-2.5">Write to me →</span>
-    </a>
-    <div class="reveal d3 mt-8 flex flex-wrap justify-center gap-3">
-      <a href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener" class="btn btn-line">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener" class="btn btn-line">LinkedIn ↗</a>
-      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="btn btn-line">Résumé ↓</a>
+  <img src="assets/img/ugv/flight.jpg" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 h-full w-full object-cover opacity-25 grayscale"/>
+  <div class="absolute inset-0 bg-gradient-to-b from-void via-void/70 to-void"></div>
+  <div class="wrap relative">
+    <p class="sec-label reveal"><span>07</span> Contact</p>
+    <h2 class="reveal d1 mt-10 font-display text-[clamp(2.4rem,7.4vw,6.6rem)] font-extrabold uppercase leading-[.92] tracking-[-.035em]">Let's build<br/><span class="text-ice">what flies.</span></h2>
+    <p class="lede reveal d2 mt-8">Open to UAV integration, R&amp;D and air–ground autonomy roles, research collaborations and hard problems in multi-vehicle systems.</p>
+    <a href="mailto:karthikeyanm19112005@gmail.com" class="reveal d3 mt-10 inline-block break-all border-b-2 border-ice pb-1 font-display text-[clamp(1.1rem,3vw,2rem)] font-medium tracking-[-.01em] transition hover:text-ice">karthikeyanm19112005@gmail.com</a>
+    <div class="reveal d3 mt-10 flex flex-wrap gap-x-8 gap-y-3">
+      <a href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener" class="link">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener" class="link">LinkedIn ↗</a>
+      <a href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener" class="link">Résumé ↓</a>
     </div>
   </div>
 </section>
 </main>
 
-<footer class="relative overflow-hidden border-t border-white/[.07] bg-surface">
-  <div class="wrap grid gap-10 pb-8 pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-    <div>
-      <a href="#top" class="flex items-center gap-2.5"><span class="grid h-8 w-8 place-items-center rounded-[10px] bg-ice"><svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#050607" stroke-width="5" stroke-linecap="round"><path d="M7 7l18 18M25 7 7 25"/></svg></span><span class="font-display text-[12px] font-bold uppercase tracking-[.08em]">Karthikeyan Manimaran</span></a>
-      <p class="mt-5 max-w-xs text-sm leading-relaxed text-dim">UAV systems integration &amp; autonomy. Chennai, India.</p>
-    </div>
-    <div><div class="font-mono text-[10px] uppercase tracking-[.18em] text-dim">Navigate</div><ul class="mt-4 space-y-2 text-sm"><li><a class="hover:text-ice" href="#about">About</a></li><li><a class="hover:text-ice" href="#capstone">Capstone</a></li><li><a class="hover:text-ice" href="#experience">Experience</a></li><li><a class="hover:text-ice" href="#demos">Demos</a></li></ul></div>
-    <div><div class="font-mono text-[10px] uppercase tracking-[.18em] text-dim">Projects</div><ul class="mt-4 space-y-2 text-sm"><li><a class="hover:text-ice" href="projects.html#capstone">Adaptive tilt UAV</a></li><li><a class="hover:text-ice" href="projects.html#uavugv">UAV–UGV planning</a></li><li><a class="hover:text-ice" href="projects.html#terrain">Aerial terrain mapper</a></li><li><a class="hover:text-ice" href="projects.html">All projects</a></li></ul></div>
-    <div><div class="font-mono text-[10px] uppercase tracking-[.18em] text-dim">Elsewhere</div><ul class="mt-4 space-y-2 text-sm"><li><a class="hover:text-ice" href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener">GitHub</a></li><li><a class="hover:text-ice" href="https://www.linkedin.com/in/karthikeyan-manimaran" target="_blank" rel="noopener">LinkedIn</a></li><li><a class="hover:text-ice" href="mailto:karthikeyanm19112005@gmail.com">Email</a></li><li><a class="hover:text-ice" href="assets/docs/Karthikeyan_Manimaran_CV.pdf" target="_blank" rel="noopener">Résumé</a></li></ul></div>
+<footer class="border-t border-white/10 bg-surface">
+  <div class="wrap flex flex-col justify-between gap-3 py-7 font-mono text-[10px] uppercase tracking-[.16em] text-dim md:flex-row">
+    <span>© 2026 Karthikeyan Manimaran · Chennai, India</span>
+    <span class="flex gap-6"><a class="hover:text-ice" href="projects.html">Projects</a><a class="hover:text-ice" href="https://github.com/karthikeyan-manimaran" target="_blank" rel="noopener">GitHub</a><a class="hover:text-ice" href="#top">↑ Top</a></span>
   </div>
-  <div class="wrap flex flex-col justify-between gap-2 pb-6 font-mono text-[10px] uppercase tracking-[.16em] text-dim md:flex-row"><span>© 2026 Karthikeyan Manimaran</span><a class="hover:text-ice" href="#top">↑ Back to top</a></div>
-  <div aria-hidden="true" class="pointer-events-none select-none text-center font-display text-[17vw] font-extrabold uppercase leading-[.78] tracking-[-.04em] text-white/[.035]">Manimaran</div>
 </footer>
 
 <script src="assets/js/main.js?v=3b09c270"></script>
-<script src="assets/js/projects.js?v=e2839302"></script>
+<script src="assets/js/projects.js?v=1b5ac1ff"></script>
 </body>
 </html>

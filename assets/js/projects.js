@@ -2,7 +2,7 @@
 (function(){
 'use strict';
 const GH='https://github.com/karthikeyan-manimaran/';
-const I='assets/img/', C=I+'capstone/', U=I+'ugv/';
+const I='assets/img/', C=I+'capstone/', U=I+'ugv/', PJ=I+'projects/';
 
 /* tiny schematic thumbnails for projects without photos */
 const S=(body)=>`<svg viewBox="0 0 200 110" fill="none" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
@@ -68,7 +68,7 @@ const P_ = [
 
 /* ---------------- 03 AERIAL TERRAIN MAPPER ---------------- */
 {id:'terrain',title:'Aerial Terrain Mapper — Drone LiDAR & Orthomosaic Pipeline',short:'PX4 SITL + ROS 2 + Gazebo pipeline: waypoint survey grids, a 64-beam 3D LiDAR, and gap-free terrain reconstruction — now flying on a real drone.',
- sub:'Robotics & Drone Technology Intern · IIT Tirupati · Jun – Dec 2026',cat:['uav','perception'],status:'wip',pill:'Internship · In progress',accent:'t',art:'terrain',tags:['PX4 SITL','ROS 2','Gazebo','MAVROS','LiDAR','RViz2','Python'],
+ sub:'Robotics & Drone Technology Intern · IIT Tirupati · Jun – Dec 2026',cat:['uav','perception'],status:'wip',pill:'Internship · In progress',accent:'t',thumb:PJ+'terrain_ortho.jpg',tags:['PX4 SITL','ROS 2','Gazebo','MAVROS','LiDAR','RViz2','Python'],
  lead:`Built during my internship at <em>IIT Tirupati</em>: a simulated drone surveys terrain with a <em>downward camera and a custom 1080×64-beam 3D LiDAR</em> (adapted from a stock single-beam sensor), stitches the captures into a 2D orthomosaic and a merged 3D terrain map, then takes the same flow onto real hardware.`,
  links:[{l:'GitHub repository',u:GH+'Aerial-Terrain-Mapper',pri:1}],
  metrics:[{v:'121',k:'captures → one orthomosaic'},{v:'64',k:'beam simulated 3D LiDAR'},{v:'11×11',k:'waypoint survey grid'}],
@@ -78,7 +78,11 @@ const P_ = [
   {t:'Sim → real',items:['<b>Autonomous point-to-point waypoint flight now works on the real drone</b>; capture + stitching integration is the next release','Reconstructed clouds verified at the ground station; <b>feature-extraction pathfinding</b> finds traversable paths for UGV deployment','Started bring-up of a new UAV: Jetson Orin Nano + Pixhawk 6X on an EFT airframe']}
  ],
  flow:{label:'// Pipeline',boxes:[['Survey grid','11×11 waypoints'],['PX4 SITL','Gazebo worlds'],['LiDAR + camera','timestamped'],['World transform','sensor → map'],['Stitch','median-per-cell'],['3D map + mosaic','RViz2',1]]},
- note:['STATUS //','Simulation complete and published; hardware capture + stitching integration in progress.']},
+ media:[
+  {src:PJ+'terrain_ortho.jpg',cap:'Orthomosaic stitched from the 121 camera captures'},
+  {src:PJ+'terrain_captures.jpg',cap:'The 11×11 capture grid — one frame per waypoint'},
+  {src:PJ+'terrain_lidar.jpg',cap:'Merged LiDAR terrain cloud (vertical scale ×7)'}],
+ note:['STATUS //','Simulation complete and published; hardware capture + stitching integration in progress. Images are outputs of the pipeline from my own runs.']},
 
 /* ---------------- 04 SWARM ---------------- */
 {id:'swarm',title:'Autonomous Swarm Rescue — Multi-Drone Search & Rescue',short:'A commander drone coordinates five X500 drones to split a search area and re-assign work when a drone fails.',
@@ -154,101 +158,108 @@ const P_ = [
 
 /* ---------------- 10 MONO VO ---------------- */
 {id:'monovo',title:'Monocular Visual Odometry with Dynamic Object Masking',short:'YOLO + Mask R-CNN remove moving objects before SuperPoint/SuperGlue pose estimation — fallback odometry for GPS-denied UAVs.',
- sub:'Fallback Odometry for GPS-Denied UAVs · KITTI Evaluated',cat:['perception','ai'],status:'sim',pill:'KITTI evaluated',accent:'a',art:'vo',tags:['Python','PyTorch','SuperGlue','YOLO','Mask R-CNN','KITTI'],
+ sub:'Fallback Odometry for GPS-Denied UAVs · KITTI Evaluated',cat:['perception','ai'],status:'sim',pill:'KITTI evaluated',accent:'a',thumb:PJ+'vo_masking_tile.jpg',tags:['Python','PyTorch','SuperGlue','YOLO','Mask R-CNN','KITTI'],
  lead:`A three-stage pipeline that <em>zeroes out dynamic pixels</em> (people, cars, bikes) before feature extraction, then recovers 6-DoF pose from <em>SuperPoint + SuperGlue</em> matches — evaluated on dynamic KITTI sequences against ORB-SLAM2.`,
  links:[{l:'GitHub repository',u:GH+'Monocular-Visual-Odometry-with-Dynamic-Object-Masking',pri:1}],
  cards:[
   {t:'Stages',items:['<b>1 Masking</b> — YOLO detects dynamic classes, Mask R-CNN gives pixel masks','<b>2 Matching</b> — SuperPoint keypoints + SuperGlue GNN matching, RANSAC verification','<b>3 Pose</b> — essential-matrix decomposition, scale approximation, accumulated trajectory']},
   {t:'Evaluation & use',am:1,items:['KITTI dynamic sequences 05, 09, 10','Masked pipeline keeps a coherent trajectory where ORB-SLAM2 jumps','Designed as secondary odometry when GPS and stereo depth fail on a UAV']}
  ],
- flow:{label:'// Pipeline',boxes:[['Frame','monocular'],['YOLO','detect'],['Mask R-CNN','segment'],['Masked frame','static only',1],['SuperPoint + SuperGlue','match'],['6-DoF pose','trajectory']]}},
+ flow:{label:'// Pipeline',boxes:[['Frame','monocular'],['YOLO','detect'],['Mask R-CNN','segment'],['Masked frame','static only',1],['SuperPoint + SuperGlue','match'],['6-DoF pose','trajectory']]},
+ media:[
+  {src:PJ+'vo_masking.jpg',cap:'Dynamic masking: original frame vs frame with movers removed'},
+  {src:PJ+'vo_trajectory.jpg',light:1,cap:'LoFTR trajectory vs ground truth — ATE 0.050 m (GT depth), 0.080 m (ZoeDepth)'},
+  {src:PJ+'vo_3d.jpg',light:1,cap:'Trajectory from original vs masked video (3D)'}],
+ note:['SOURCE //','All three images are outputs saved in the repo notebooks (experiments/).']},
 
 /* ---------------- 11 CODE OPTIMIZER ---------------- */
 {id:'codeopt',title:'Code Optimizer AI — Makeathon Winner',short:'AST-powered multi-language code optimizer with real-time suggestions. 1st place among 40+ teams, led to an L&T internship offer.',
- sub:'1st Place · L&T × Innova Makeathon',cat:['software','ai'],status:'',pill:'🏆 1st place',accent:'a',art:'learn',tags:['React','Vite','Node.js','AST Parsing','WebSockets'],
+ sub:'1st Place · L&T × Innova Makeathon',cat:['software','ai'],status:'',pill:'🏆 1st place',accent:'a',thumb:PJ+'codeopt_ui.jpg',tags:['React','Vite','Node.js','AST Parsing','WebSockets'],
  lead:`A web platform that parses code into an <em>AST</em> to detect inefficiencies, anti-patterns and bugs across JavaScript, TypeScript, Python, Java and C++, streaming suggestions over WebSockets and showing a side-by-side original vs optimized diff. It <em>won 1st place among 40+ teams</em> and earned a full internship offer from Larsen & Toubro.`,
  links:[{l:'GitHub repository',u:GH+'code-optimizer-AI',pri:1}],
  cards:[
   {t:'Features',items:['Real-time suggestions as you type','Time/space complexity analysis; multiple options with trade-offs','Estimated execution-time and memory impact; export + version compare']},
   {t:'Architecture',am:1,items:['React + Vite frontend, Node.js backend','AST parsing for deep code understanding','WebSockets for instant feedback; customisable rules']}
- ]},
+ ],
+media:[{src:PJ+'codeopt_ui.jpg',cap:'The Refyne AI / Code Optimizer interface from a local run: editor and optimized-output panels'}]},
 
 /* ---------------- 12 EVA ---------------- */
 {id:'eva',title:'EVA — Empathetic Voice Assistant for Elderly Healthcare',short:'Offline-first voice companion: Whisper ASR, patient memory from documents, medical LLM, calm TTS.',
- sub:'Whisper ASR · Medical LLM · Offline TTS · Dec 2025',cat:['ai'],status:'',pill:'AI · Healthcare',accent:'p',art:'voice',tags:['Whisper','Medical LLM','FAISS','PyAudio','pyttsx3','Python'],
+ sub:'Whisper ASR · Medical LLM · Offline TTS · Dec 2025',cat:['ai'],status:'',pill:'AI · Healthcare',accent:'p',thumb:PJ+'eva_output.jpg',tags:['Whisper','Medical LLM','FAISS','PyAudio','pyttsx3','Python'],
  lead:`A voice-first assistant that turns <em>speech and medical documents</em> (PDF/DOCX/TXT) into a persistent patient record and responds slowly and calmly. <em>Advisory only</em> — it never diagnoses and escalates high-risk vitals to a doctor or caregiver.`,
  links:[{l:'GitHub repository',u:GH+'EVA-Empathetic-Voice-Assistant-for-Elderly-Healthcare',pri:1}],
  cards:[{t:'Design',items:['<b>Offline-first</b> — Whisper + TTS run locally','Modular pipeline: asr · memory · ingest · llm · tts','Persistent JSON memory: vitals, conditions, medications, query log']},{t:'Safety',am:1,items:['No diagnoses; safety over conversational continuity','High-risk vitals → advise doctor / caregiver / emergency services']}],
+ media:[{src:PJ+'eva_output.jpg',cap:'Real notebook output: DOCX record parsed to JSON, then a voice reply (patient name redacted)'}],
  flow:{label:'// Voice pipeline',boxes:[['Mic','PyAudio'],['Whisper STT','offline'],['Memory','JSON'],['Medical LLM','contextual'],['TTS','slow & calm'],['Voice reply','',1]]}},
 
 /* ---------------- 13 IPL RAG ---------------- */
 {id:'ipl',title:'IPL Agentic RAG System',short:'Hand-built ReAct agent with FAISS search, Pandas analytics and live web search — no agent framework.',
- sub:'Multi-tool ReAct Agent · FAISS · CSV Analytics · Tavily',cat:['ai'],status:'',pill:'AI · Agents',accent:'g',art:'rag',tags:['GPT-4','FAISS','Tavily','Pandas','TF-IDF + LSA','Python'],
+ sub:'Multi-tool ReAct Agent · FAISS · CSV Analytics · Tavily',cat:['ai'],status:'',pill:'AI · Agents',accent:'g',thumb:PJ+'ipl_output.jpg',tags:['GPT-4','FAISS','Tavily','Pandas','TF-IDF + LSA','Python'],
  lead:`An <em>explicit while-loop ReAct agent</em> (no LangChain AgentExecutor) that routes questions across three tools — semantic search over IPL PDF reports, Pandas queries over match CSVs, and live web search — with a hard step cap and a structured JSON trace.`,
  links:[{l:'GitHub repository',u:GH+'IPL-Agentic-RAG-System',pri:1}],
- cards:[{t:'Tools',items:['<b>search_docs</b> — FAISS over IPL 2023–24 reports (TF-IDF + LSA, 256-d)','<b>query_data</b> — Pandas aggregations over match CSVs','<b>web_search</b> — Tavily for live news']},{t:'Safety',am:1,items:['Hard 8-step cap and loop detection','Off-topic refusals','Every step logged: tool, input, result, reason, duration']}]},
+ cards:[{t:'Tools',items:['<b>search_docs</b> — FAISS over IPL 2023–24 reports (TF-IDF + LSA, 256-d)','<b>query_data</b> — Pandas aggregations over match CSVs','<b>web_search</b> — Tavily for live news']},{t:'Safety',am:1,items:['Hard 8-step cap and loop detection','Off-topic refusals','Every step logged: tool, input, result, reason, duration']}],
+ media:[{src:PJ+'ipl_output.jpg',cap:'Real notebook output: structured query and FAISS retrieval'}]},
 
 /* ---------------- 14 WELLNESS ---------------- */
-{id:'wellness',title:'AI Student Wellness Coach',short:'Conversational assistant offering guidance on student stress, well-being and academic challenges.',
- sub:'Google Gemini · TypeScript · Vite',cat:['software','ai'],status:'',pill:'Web app',accent:'g',art:'care',tags:['TypeScript','React','Vite','Gemini API'],
- lead:`A web-based <em>conversational coach</em> that gives students personalised guidance on stress, well-being and academic pressure, built on the Google Gemini API.`,
- links:[{l:'GitHub repository',u:GH+'AI-Student-Wellness-Coach',pri:1}]},
+{id:'wellness',title:'AI Student Wellness Coach',short:'Onboarding profile → Gemini-generated personalised wellness plan: workout, meals and a wellness check, saved locally.',
+ sub:'Google Gemini · TypeScript · Vite',cat:['software','ai'],status:'',pill:'Web app',accent:'g',thumb:PJ+'wellness_ui.jpg',tags:['TypeScript','React','Vite','Gemini API'],
+ lead:`A multi-step <em>onboarding</em> collects a student's profile (fitness level, goals, budget, schedule, resources), then the <em>Gemini API</em> builds a personalised wellness plan — workout, meal plan and a wellness check — shown on a dashboard and kept in local storage. Built in Google AI Studio with React, TypeScript and Vite.`,
+ links:[{l:'GitHub repository',u:GH+'AI-Student-Wellness-Coach',pri:1}],
+cards:[{t:'What it does',items:['<b>Onboarding</b> wizard (4 steps) builds the user profile','<b>Gemini</b> generates the plan; Dashboard shows workout, meal and wellness-check tabs','Profile and plan persist in <b>localStorage</b>; plan can be regenerated or reset']}],
+ media:[{src:PJ+'wellness_ui.jpg',cap:'Onboarding, step 1 of 4 (local run)'}]},
 
 /* ---------------- 15 SKILL EXCHANGE ---------------- */
 {id:'skill',title:'Skill Exchange — E-Learning Platform',short:'Next.js platform connecting learners with expert instructors — catalogs, dashboards, payments, certificates.',
- sub:'Next.js · TypeScript · Firebase · Tailwind',cat:['software'],status:'',pill:'Full-stack',accent:'t',art:'learn',tags:['Next.js','TypeScript','Firebase','Tailwind','shadcn/ui'],
+ sub:'Next.js · TypeScript · Firebase · Tailwind',cat:['software'],status:'',pill:'Full-stack',accent:'t',thumb:PJ+'skill_ui.jpg',tags:['Next.js','TypeScript','Firebase','Tailwind','shadcn/ui'],
  lead:`A full-stack <em>e-learning marketplace</em> with a searchable course catalog, separate student and instructor dashboards, progress tracking, payments, auto-issued certificates and per-course discussion forums.`,
  links:[{l:'GitHub repository',u:GH+'skill-exchange-platform',pri:1}],
- cards:[{t:'Stack',items:['Next.js + React + TypeScript, Tailwind & shadcn/ui','Firebase Auth, Firestore and Storage','Context API state · deployed on Vercel']}]},
+ cards:[{t:'Stack',items:['Next.js + React + TypeScript, Tailwind & shadcn/ui','Firebase Auth, Firestore and Storage','Context API state · deployed on Vercel']}],
+media:[{src:PJ+'skill_ui.jpg',cap:'SkillSwap landing page (local run)'}]},
 
 /* ---------------- 16 2048 ---------------- */
 {id:'g2048',title:'2048 — React Puzzle Game',short:'Classic 2048 recreated in React + SCSS with arrow-key controls and best-score tracking.',
- sub:'React · SCSS',cat:['software'],status:'',pill:'Web app',accent:'a',art:'game',tags:['React','SCSS','JavaScript'],
+ sub:'React · SCSS',cat:['software'],status:'',pill:'Web app',accent:'a',thumb:PJ+'g2048_game.jpg',tags:['React','SCSS','JavaScript'],
  lead:`A faithful <em>browser version of 2048</em> built with React and modular SCSS — arrow-key play, live and best score, one-click restart.`,
- links:[{l:'GitHub repository',u:GH+'2048-game',pri:1}]}
+ links:[{l:'GitHub repository',u:GH+'2048-game',pri:1}],
+media:[{src:PJ+'g2048_game.jpg',cap:'Mid-game after scripted arrow-key moves: score 184, 32 tile (local run)'}]}
 ];
 
 const byId=Object.fromEntries(P_.map(p=>[p.id,p]));
 /* keep old deep links (projects.html#p1 …) working */
 Object.entries({p1:'slam',p2:'uavhw','mine-project':'mine',p3:'rl',p4:'autodock',p5:'monovo',p6:'codeopt',p7:'eva',p8:'ipl'}).forEach(([k,v])=>byId[k]=byId[v]);
 
-const CAT={uav:'UAV',ugv:'UGV','air-ground':'AIR–GROUND',perception:'PERCEPTION',ai:'AI/ML',software:'SOFTWARE'};
-const pillCls={hw:'pill-hw',sim:'pill-sim',wip:'pill-wip','':'pill-win'};
+const CAT={uav:'UAV',ugv:'UGV','air-ground':'Air–Ground',perception:'Perception',ai:'AI/ML',software:'Software'};
+const stCls={hw:'st-hw',sim:'st-sim',wip:'st-wip','':'st-win'};
 const num=p=>String(P_.indexOf(p)+1).padStart(2,'0');
 const playBtn=l=>`<button class="ov" aria-label="${l}"><span class="ring"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px"><polygon points="5,3 19,12 5,21"/></svg></span><span class="lbl">${l}</span></button>`;
 
 function card(p){
-  const th=p.thumb?`<img src="${p.thumb}" alt="" loading="lazy" class="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100"/>`
-    :`<div class="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(168,199,255,.07),transparent_70%)] p-6"><div class="h-full w-4/5 [&>svg]:h-full [&>svg]:w-full">${ART[p.art]||''}</div></div>`;
-  return `<button class="pcard card group reveal flex flex-col overflow-hidden text-left transition duration-300 hover:-translate-y-1 hover:border-ice/40 ${p.feat?'md:col-span-2':''}" data-id="${p.id}" data-cat="${p.cat.join(' ')}" aria-label="Open ${p.title}">
-    <div class="relative m-2 overflow-hidden rounded-[20px] bg-void ${p.feat?'aspect-[16/10] md:aspect-[21/9]':'aspect-[16/10]'}">${th}
-      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/70 via-transparent to-transparent"></div>
-      ${p.pill?`<span class="pill ${pillCls[p.status||'']} absolute left-3 top-3">${p.pill}</span>`:''}
-      <span class="absolute bottom-3 right-3 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-fg backdrop-blur transition duration-300 group-hover:rotate-[-45deg] group-hover:bg-ice group-hover:text-void">→</span></div>
-    <div class="flex flex-1 flex-col px-6 pb-6 pt-4">
-      <div class="mb-3 flex justify-between font-mono text-[10px] uppercase tracking-[.18em] text-dim"><span class="text-ice">PRJ.${num(p)}</span><span>${p.cat.map(c=>CAT[c]).join(' · ')}</span></div>
-      <h3 class="font-display text-[1.02rem] font-semibold uppercase leading-snug tracking-[-.01em]">${p.title}</h3>
-      <p class="mt-3 flex-1 text-sm leading-relaxed text-dim">${p.short}</p>
-      <div class="mt-5 flex flex-wrap gap-1.5">${p.tags.slice(0,4).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    </div></button>`;
+  const th=p.thumb?`<img src="${p.thumb}" alt="" loading="lazy" class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"/>`
+    :`<div class="flex h-full w-full items-center justify-center p-8"><div class="h-full w-3/5 [&>svg]:h-full [&>svg]:w-full">${ART[p.art]||''}</div></div>`;
+  return `<button class="pcard group reveal text-left ${p.feat?'md:col-span-2':''}" data-id="${p.id}" data-cat="${p.cat.join(' ')}" aria-label="Open ${p.title}">
+    <div class="relative overflow-hidden rounded-[4px] bg-surface ${p.feat?'aspect-[16/10] md:aspect-[21/9]':'aspect-[16/10]'}">${th}</div>
+    <div class="mt-4 flex items-baseline justify-between gap-4 font-mono text-[10px] uppercase tracking-[.18em] text-dim"><span><span class="text-ice">${num(p)}</span> · ${p.cat.map(c=>CAT[c]).join(' · ')}</span>${p.pill?`<span class="st ${stCls[p.status||'']}">${p.pill}</span>`:''}</div>
+    <h3 class="mt-2 font-display text-[1.12rem] font-semibold leading-snug tracking-[-.015em] transition-colors group-hover:text-ice">${p.title}</h3>
+    <p class="mt-2 max-w-xl text-sm leading-relaxed text-dim">${p.short}</p>
+    <p class="mt-3 font-mono text-[10px] uppercase tracking-[.1em] text-dim/70">${p.tags.slice(0,4).join(' / ')}</p></button>`;
 }
 
 function drawerHTML(p){
-  const metrics=p.metrics?`<div class="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">${p.metrics.map(m=>`<div class="kpi rounded-2xl border border-white/10 bg-white/[.03] p-4"><div class="v">${m.v}${m.u?`<small>${m.u}</small>`:''}</div><div class="k">${m.k}</div></div>`).join('')}</div>`:'';
-  const video=p.video?`<div class="mt-8"><div class="vf"><span class="rec ${p.video.sim?'sim':''}"><i></i>${p.video.sim?'SIM':'REC'}</span>
+  const metrics=p.metrics?`<dl class="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/10 pt-6 md:grid-cols-4">${p.metrics.map(m=>`<div><dt class="font-display text-[clamp(1.5rem,2.4vw,2.1rem)] font-semibold leading-none">${m.v}${m.u?`<span class="ml-1 font-mono text-[11px] font-medium text-dim">${m.u}</span>`:''}</dt><dd class="mt-2 font-mono text-[10px] uppercase leading-snug tracking-[.1em] text-dim">${m.k}</dd></div>`).join('')}</dl>`:'';
+  const video=p.video?`<div class="mt-10"><div class="vf"><span class="rec ${p.video.sim?'sim':''}"><i></i>${p.video.sim?'SIM':'REC'}</span>
     <video preload="none" playsinline loop muted poster="${p.video.poster}"><source src="${p.video.src}"/></video><div class="bar"></div>${playBtn(p.video.label)}</div>
-    <div class="fig-cap">${p.video.cap}</div></div>`:'';
-  const flow=p.flow?`<div class="mt-10"><div class="label mb-4"><b>●</b> ${p.flow.label.replace('// ','')}</div><div class="flex flex-wrap items-stretch gap-y-2 rounded-2xl border border-white/10 bg-white/[.02] p-4">${p.flow.boxes.map((b,k)=>`${k?'<span class="self-center px-2 font-mono text-dim">→</span>':''}<div class="rounded-xl border px-3 py-2 text-center font-mono text-[11px] leading-snug ${b[2]?'border-ice/60 bg-ice/10 text-fg':'border-white/15'}">${b[0]}${b[1]?`<small class="block text-[9px] uppercase tracking-wider text-dim">${b[1]}</small>`:''}</div>`).join('')}</div></div>`:'';
-  const cards=p.cards?`<div class="mt-10 grid gap-4 md:grid-cols-2">${p.cards.map(c=>`<div class="rounded-2xl border border-white/10 bg-white/[.03] p-5"><h4 class="mb-3 font-mono text-[11px] font-medium uppercase tracking-[.14em] ${c.am?'text-ice':'text-steel'}">${c.t}</h4><ul class="bul">${c.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div>`:'';
-  const media=p.media?`<div class="mt-10"><div class="label mb-4"><b>●</b> Gallery — click to enlarge</div><div class="grid grid-cols-2 gap-3 md:grid-cols-4">${p.media.map(m=>`<button class="shot ${m.light?'light':''}" data-zoom="${m.src}" data-cap="${m.cap}"><img src="${m.src}" alt="${m.cap}" loading="lazy"/><span class="cap">${m.cap}</span></button>`).join('')}</div></div>`:'';
+    <p class="fig-cap">${p.video.cap}</p></div>`:'';
+  const flow=p.flow?`<div class="mt-10 border-t border-white/10 pt-6"><p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice">${p.flow.label.replace('// ','')}</p><p class="mt-4 font-mono text-[12px] leading-8 text-dim">${p.flow.boxes.map((b,k)=>`${k?'<span class="px-2 text-ice">→</span>':''}<span class="${b[2]?'text-fg':''}">${b[0]}${b[1]?` <span class="text-dim/60">(${b[1]})</span>`:''}</span>`).join('')}</p></div>`:'';
+  const cards=p.cards?`<div class="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">${p.cards.map(c=>`<div class="border-t border-white/10 pt-4"><h4 class="mb-3 font-mono text-[11px] font-medium uppercase tracking-[.14em] ${c.am?'text-ice':'text-steel'}">${c.t}</h4><ul class="bul">${c.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}</div>`:'';
+  const media=p.media?`<div class="mt-12 border-t border-white/10 pt-6"><p class="font-mono text-[11px] uppercase tracking-[.16em] text-ice">Output &amp; gallery <span class="text-dim">— click to enlarge</span></p><div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">${p.media.map(m=>`<button class="shot ${m.light?'light':''}" data-zoom="${m.src}" data-cap="${m.cap}"><img src="${m.src}" alt="${m.cap}" loading="lazy"/><span class="cap">${m.cap}</span></button>`).join('')}</div></div>`:'';
   const links=p.links&&p.links.length?`<div class="mt-7 flex flex-wrap gap-3">${p.links.map(l=>`<a class="btn ${l.pri?'btn-ice':'btn-line'}" href="${l.u}" target="_blank" rel="noopener">${l.l} ↗</a>`).join('')}</div>`:'';
-  const note=p.note?`<div class="mt-10 rounded-2xl border border-dashed border-white/15 p-4 font-mono text-[11px] leading-relaxed text-dim"><b class="font-medium text-ice">${p.note[0]}</b> ${p.note[1]}</div>`:'';
+  const note=p.note?`<p class="mt-12 border-t border-white/10 pt-5 font-mono text-[11px] leading-relaxed text-dim"><span class="text-ice">${p.note[0]}</span> ${p.note[1]}</p>`:'';
   return `<div class="p-6 md:p-10">
-    <div class="mb-8 flex items-start justify-between gap-4"><div class="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[.18em] text-dim"><span class="text-ice">PRJ.${num(p)}</span>${p.pill?`<span class="pill ${pillCls[p.status||'']}">${p.pill}</span>`:''}</div>
+    <div class="mb-8 flex items-start justify-between gap-4"><div class="flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-[.18em] text-dim"><span><span class="text-ice">${num(p)}</span> · case file</span>${p.pill?`<span class="st ${stCls[p.status||'']}">${p.pill}</span>`:''}</div>
       <button class="dclose btn btn-line shrink-0 !px-4 !py-2" aria-label="Close case file">Close ✕</button></div>
-    <h2 id="dtitle" class="font-display text-[clamp(1.5rem,3.2vw,2.5rem)] font-bold uppercase leading-[1.06] tracking-[-.02em]">${p.title}</h2>
-    <div class="mt-4 font-mono text-[11px] uppercase tracking-[.1em] text-steel">${p.sub}</div>
-    <div class="mt-4 flex flex-wrap gap-1.5">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <h2 id="dtitle" class="font-display text-[clamp(1.6rem,3.2vw,2.5rem)] font-semibold leading-[1.1] tracking-[-.025em]">${p.title}</h2>
+    <p class="mt-4 font-mono text-[11px] uppercase tracking-[.1em] text-steel">${p.sub}</p>
+    <p class="mt-4 font-mono text-[10px] uppercase tracking-[.1em] text-dim/80">${p.tags.join(' / ')}</p>
     <p class="lead mt-7 max-w-3xl text-[1.02rem] leading-relaxed text-dim">${p.lead}</p>${links}${video}${metrics}${flow}${cards}${media}${note}</div>`;
 }
 
@@ -293,9 +304,8 @@ function mount(){
     const grid=document.querySelector('[data-grid]'),cnt=document.getElementById('fcount'),feat=(grid.dataset.feat||'').split(',');
     const apply=f=>{let n=0;grid.querySelectorAll('.pcard').forEach(c=>{const ok=f==='all'||c.dataset.cat.split(' ').includes(f);c.classList.toggle('hide',!ok);if(ok)n++;
       c.classList.toggle('md:col-span-2',f==='all'&&feat.includes(c.dataset.id))});
-      cnt.textContent=String(n).padStart(2,'0')+' / '+P_.length+' SYSTEMS';
-      fb.querySelectorAll('button').forEach(b=>{const on=b.dataset.f===f;b.setAttribute('aria-pressed',on);
-        b.classList.toggle('!bg-ice',on);b.classList.toggle('!text-void',on);b.classList.toggle('!border-ice',on)})};
+      cnt.textContent=String(n).padStart(2,'0')+' / '+P_.length;
+      fb.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===f))};
     fb.addEventListener('click',e=>{const b=e.target.closest('button[data-f]');if(b)apply(b.dataset.f)});
     apply('all');
   }
